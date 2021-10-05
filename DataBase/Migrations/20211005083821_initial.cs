@@ -60,6 +60,37 @@ namespace DataBase.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "RoleName" },
+                values: new object[,]
+                {
+                    { 2, "admin" },
+                    { 1, "employee" },
+                    { 3, "headOfDepartament" },
+                    { 4, "teamRole" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Statuses",
+                columns: new[] { "Id", "StatusName" },
+                values: new object[,]
+                {
+                    { 1, "Работает" },
+                    { 2, "Уволен" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Name", "Password", "RoleId", "StatuseId" },
+                values: new object[,]
+                {
+                    { 1, "Employee", 123, 1, 1 },
+                    { 2, "Admin", 123, 2, 1 },
+                    { 3, "Departament", 123, 3, 1 },
+                    { 4, "TeamLead", 123, 4, 1 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",

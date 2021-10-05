@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataBase.Migrations
 {
     [DbContext(typeof(BoardContext))]
-    [Migration("20211005074738_initial")]
+    [Migration("20211005083821_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,6 +34,28 @@ namespace DataBase.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            RoleName = "admin"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            RoleName = "employee"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            RoleName = "headOfDepartament"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            RoleName = "teamRole"
+                        });
                 });
 
             modelBuilder.Entity("DataBase.Entities.Statuses", b =>
@@ -49,6 +71,18 @@ namespace DataBase.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Statuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            StatusName = "Работает"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            StatusName = "Уволен"
+                        });
                 });
 
             modelBuilder.Entity("DataBase.Entities.User", b =>
@@ -77,6 +111,40 @@ namespace DataBase.Migrations
                     b.HasIndex("StatuseId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Employee",
+                            Password = 123,
+                            RoleId = 1,
+                            StatuseId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Admin",
+                            Password = 123,
+                            RoleId = 2,
+                            StatuseId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Departament",
+                            Password = 123,
+                            RoleId = 3,
+                            StatuseId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "TeamLead",
+                            Password = 123,
+                            RoleId = 4,
+                            StatuseId = 1
+                        });
                 });
 
             modelBuilder.Entity("DataBase.Entities.User", b =>
