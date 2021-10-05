@@ -1,4 +1,8 @@
 using DataBase;
+using EmployeeManagement.Models.Repositroy;
+using EmployeeManagement.Models.Repositroy.Interface;
+using EmployeeManagement.Models.Service;
+using EmployeeManagement.Models.Service.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,10 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EmployeeManagement
 {
@@ -27,6 +27,8 @@ namespace EmployeeManagement
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<BoardContext>(options => options.UseSqlServer(connection));
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddControllersWithViews();
         }
 
@@ -48,13 +50,14 @@ namespace EmployeeManagement
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
             });
         }
     }
