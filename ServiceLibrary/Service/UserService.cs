@@ -18,10 +18,30 @@ namespace EmployeeManagement.Models.Service
             _userRepository = userRepository;
         }
 
-        public User GetUser(UserViewModel userViewModel)
+        public async Task<bool> CreateUser(User user)
+        {
+            return await _userRepository.CreateUser(user);
+        }
+
+        public async Task<bool> DeleteUser(int id)
+        {
+            return await _userRepository.DeleteUser(id);
+        }
+
+        public async Task<bool> EditUser(User user)
+        {
+            return await _userRepository.EditUser(user);
+        }
+
+        public User GetUser(User userViewModel)
         {
            return _userRepository.GetUsers().FirstOrDefault(t=>t.Name == userViewModel.Name && t.Password 
             == userViewModel.Password);
+        }
+
+        public User GetUser(int id)
+        {
+            return _userRepository.GetUsers().FirstOrDefault(t=>t.Id == id);
         }
 
         public IEnumerable<User> GetUsers()

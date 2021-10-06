@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Models.Repositroy.Interface
+namespace DataBase.Repositroy.Interface
 {
-    public interface IUserRepository
+    public interface IRoleRepository
     {
-        public IEnumerable<User> GetUsers();
+        public IEnumerable<Role> GetRoles();
     }
 }

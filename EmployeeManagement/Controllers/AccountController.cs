@@ -33,20 +33,20 @@ namespace EmployeeManagement.Controllers
             {
                 try
                 {
-                    User user = _userService.GetUser(model);
+                    User user = _userService.GetUser(new User {Name = model.Name,Password =model.Password});
                     if (user != null)
                     {
                         await Authenticate(user); // аутентификация
 
-                        return RedirectToAction("UserDesk", "Desk");
+                        return RedirectToAction("Index", "Admin");
                     }
                     else
                         ModelState.AddModelError("Password", "Некорректные логин и(или) пароль");
                 }
-                catch (Exception)
+                catch (Exception exp)
                 {
 
-                    ModelState.AddModelError("Password", "Некорректные логин и(или) пароль");
+                    ModelState.AddModelError("Password", exp.Message);
                 }
 
             }
