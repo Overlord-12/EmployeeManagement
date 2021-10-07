@@ -1,4 +1,5 @@
-﻿using DataBase.Entities;
+﻿using AutoMapper;
+using DataBase.Entities;
 using EmployeeManagement.Models;
 using EmployeeManagement.Models.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
@@ -16,11 +17,14 @@ namespace EmployeeManagement.Controllers
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
         private readonly IStatusesService _statusesService;
-        public AdminController(IUserService userService,IRoleService roleService,IStatusesService statusesService)
+        private readonly IMapper _mapper;
+        public AdminController(IUserService userService,IRoleService roleService,
+            IStatusesService statusesService, IMapper mapper)
         {
             _statusesService = statusesService;
             _userService = userService;
             _roleService = roleService;
+            _mapper = mapper;
         }
         [HttpGet]
         [Authorize(Roles ="admin")]
@@ -40,13 +44,7 @@ namespace EmployeeManagement.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create(UserViewModel userViewModel)
         {
-            User user = new User
-            {
-                StatuseId = userViewModel.StatuseId,
-                RoleId = userViewModel.RoleId,
-                Name = userViewModel.Name,
-                Password = userViewModel.Password,
-            };
+            var user = _mapper.Map<User>(userViewModel);
             await _userService.CreateUser(user);
             return RedirectToAction("Index", "Admin");
         }
@@ -64,22 +62,15 @@ namespace EmployeeManagement.Controllers
         {
             ViewBag.Statuses = _statusesService.GetStatuses();
             ViewBag.Role = _roleService.GetRoles();
-            var us = _userService.GetUser(id);
-            UserViewModel user = new UserViewModel
-            {
-                Id = id,
-                Name = us.Name,
-                Password = us.Password,
-                RoleId = us.RoleId,
-                StatuseId = us.StatuseId
-            };
+            var user = _mapper.Map<UserViewModel>(_userService.GetUser(id));
             return View(user);
         }
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(UserViewModel userViewModel)
         {
-            await _userService.EditUser(userViewModel);
+            var user = _mapper.Map<User>(userViewModel);
+            await _userService.EditUser(user);
             return RedirectToAction("Index", "Admin");
         }
         

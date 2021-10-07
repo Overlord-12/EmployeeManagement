@@ -9,6 +9,6 @@ namespace DataBase.Repositroy.Interface
 {
     public interface IStatusesRepository
     {
-        public IEnumerable<Statuses> GetStatuses();
+        public IEnumerable<Status> GetStatuses();
     }
 }

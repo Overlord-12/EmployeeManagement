@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataBase.Entities
 {
-    public class Statuses
+    public class Status
     {
         public int Id { get; set; }
         public string StatusName { get; set; }

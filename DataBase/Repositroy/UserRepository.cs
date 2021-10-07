@@ -16,7 +16,6 @@ namespace EmployeeManagement.Models.Repositroy
         {
             _boardContext = boardContext;
         }
-
         public async Task<bool> CreateUser(User user)
         {
             //User userCreate = new User
@@ -36,29 +35,27 @@ namespace EmployeeManagement.Models.Repositroy
             {
                 return false;
             }
-            
-        }
 
+        }
         public async Task<bool> DeleteUser(int id)
         {
             try
             {
-                _boardContext.Users.Remove(_boardContext.Users.FirstOrDefault(t=>t.Id == id));
+                _boardContext.Users.Remove(_boardContext.Users.FirstOrDefault(t => t.Id == id));
                 await _boardContext.SaveChangesAsync();
-                return  true;
+                return true;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return false;
             }
         }
-
         public async Task<bool> EditUser(User user)
         {
             try
             {
                 _boardContext.Users.Update(user);
-               await _boardContext.SaveChangesAsync();
+                await _boardContext.SaveChangesAsync();
                 return true;
             }
             catch
@@ -66,10 +63,9 @@ namespace EmployeeManagement.Models.Repositroy
                 return false;
             }
         }
-
         public IEnumerable<User> GetUsers()
         {
-            return _boardContext.Users.Include(t=>t.Role).Include(t=>t.Statuse).ToList();
+            return _boardContext.Users.Include(t => t.Role).Include(t => t.Status).ToList();
         }
     }
 }

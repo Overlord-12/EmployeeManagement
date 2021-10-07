@@ -16,7 +16,7 @@ namespace ServiceLibrary.Service
         {
             _statusesRepository = statusesRepository;
         }
-        public IEnumerable<Statuses> GetStatuses()
+        public IEnumerable<Status> GetStatuses()
         {
             return _statusesRepository.GetStatuses().ToList();
         }

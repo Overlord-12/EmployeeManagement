@@ -33,10 +33,10 @@ namespace EmployeeManagement.Models.Service
             return await _userRepository.EditUser(user);
         }
 
-        public User GetUser(User userViewModel)
+        public User GetUser(User user)
         {
-           return _userRepository.GetUsers().FirstOrDefault(t=>t.Name == userViewModel.Name && t.Password 
-            == userViewModel.Password);
+           return _userRepository.GetUsers().FirstOrDefault(t=>t.Login == user.Login && t.Password 
+            == user.Password);
         }
 
         public User GetUser(int id)

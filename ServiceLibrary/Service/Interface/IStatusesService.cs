@@ -9,6 +9,6 @@ namespace ServiceLibrary.Service.Interface
 {
     public interface IStatusesService
     {
-        public IEnumerable<Statuses> GetStatuses();
+        public IEnumerable<Status> GetStatuses();
     }
 }

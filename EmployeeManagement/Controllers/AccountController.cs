@@ -33,7 +33,7 @@ namespace EmployeeManagement.Controllers
             {
                 try
                 {
-                    User user = _userService.GetUser(new User {Name = model.Name,Password =model.Password});
+                    User user = _userService.GetUser(new User {Login = model.Login,Password = model.Password});
                     if (user != null)
                     {
                         await Authenticate(user); // аутентификация
@@ -57,7 +57,7 @@ namespace EmployeeManagement.Controllers
             // создаем один claim
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.RoleName)
             };
             // создаем объект ClaimsIdentity

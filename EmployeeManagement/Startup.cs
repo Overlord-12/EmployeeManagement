@@ -1,6 +1,7 @@
 using DataBase;
 using DataBase.Repositroy;
 using DataBase.Repositroy.Interface;
+using EmployeeManagement.Models;
 using EmployeeManagement.Models.Repositroy;
 using EmployeeManagement.Models.Repositroy.Interface;
 using EmployeeManagement.Models.Service;
@@ -37,6 +38,7 @@ namespace EmployeeManagement
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IStatusesService, StatusesService>();
             services.AddScoped<IStatusesRepository, StatusesRepository>();
+            services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

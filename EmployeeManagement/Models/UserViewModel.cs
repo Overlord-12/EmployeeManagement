@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Models
 {
-    public class UserViewModel:User
+    public class UserViewModel
     {
-        [Required(ErrorMessage = "Email is not specified")]
-        public string Name { get; set; }
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Login is not specified")]
+        public string Login { get; set; }
         [Required(ErrorMessage = "No password specified")]
         [DataType(DataType.Password)]
-        public int Password { get; set; }
+        public string Password { get; set; }
+        public int? RoleId { get; set; }
+        public int? StatusId { get; set; }
+        public int? DepartmentId { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace DataBase.Repositroy
         {
             _boardContext = boardContext;
         }
-        public IEnumerable<Statuses> GetStatuses()
+        public IEnumerable<Status> GetStatuses()
         {
             return _boardContext.Statuses.ToList();
         }
