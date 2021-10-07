@@ -1,0 +1,57 @@
+﻿.inputFields {
+    width: 100%;
+    padding: 0 0 10px 0;
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid #e0e0e0;
+    transition: 0.3s;
+    width: 200px;
+}
+.WarningMessage{
+    color:red;
+}
+.UnderDiv {
+    margin-top: 10px;
+}
+.mainDiv {
+    text-align: center;
+    width: 600px;
+    padding: 32px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px #ccc;
+    font-family: sans-serif;
+    letter-spacing: 1px;
+    margin: 0 auto;
+}
+
+.headText {
+    text-align: center;
+    color: cadetblue;
+}
+
+.regist {
+    width: 200px;
+    height: 40px;
+    margin-top: 10px;
+    border: solid 1px;
+    border-radius: 10px;
+    background-color: white
+}
+
+    .regist:hover {
+        color: blue;
+    }
+
+.enterButton {
+    width: 100px;
+    height: 40px;
+    margin-top: 10px;
+    border: solid 1px;
+    border-radius: 10px;
+    background-color: white
+}
+
+    .enterButton:hover {
+        cursor: auto;
+        color: blue;
+    }

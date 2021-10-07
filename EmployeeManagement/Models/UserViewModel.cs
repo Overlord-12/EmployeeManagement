@@ -1,0 +1,22 @@
+﻿using DataBase.Entities;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace EmployeeManagement.Models
+{
+    public class UserViewModel
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Login is not specified")]
+        public string Login { get; set; }
+        [Required(ErrorMessage = "No password specified")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+        public int? RoleId { get; set; }
+        public int? StatusId { get; set; }
+        public int? DepartmentId { get; set; }
+    }
+}
