@@ -38,6 +38,8 @@ namespace EmployeeManagement
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IStatusesService, StatusesService>();
             services.AddScoped<IStatusesRepository, StatusesRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
