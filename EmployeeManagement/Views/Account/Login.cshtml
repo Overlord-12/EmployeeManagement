@@ -30,6 +30,9 @@
                         <input class="inputFields" asp-for="Password" />
                     </div>
                     @Html.ValidationMessageFor(model => model.Password, null, new { @class = "WarningMessage" })
+                    <div class="form-group UnderDiv">
+                        <input type="submit" value="Log In" class="enterButton" />
+                    </div>
                 </div>
             </form>
         </div>

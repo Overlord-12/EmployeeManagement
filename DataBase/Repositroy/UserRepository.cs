@@ -45,8 +45,9 @@ namespace EmployeeManagement.Models.Repositroy
                 await _boardContext.SaveChangesAsync();
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var massage = ex.Message;
                 return false;
             }
         }

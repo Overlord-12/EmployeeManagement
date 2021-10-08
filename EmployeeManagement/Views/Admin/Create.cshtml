@@ -35,6 +35,14 @@
                     }
                 </select>
             </div>
+            <div>
+                <select asp-for="DepartmentId">
+                    @foreach (var item in ViewBag.Departament)
+                    {
+                        <option value="@item.Id">@item.DepartmentName</option>
+                    }
+                </select>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

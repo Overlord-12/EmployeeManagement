@@ -17,10 +17,12 @@ namespace EmployeeManagement.Controllers
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
         private readonly IStatusesService _statusesService;
+        private readonly IDepartmentService _departmentService;
         private readonly IMapper _mapper;
         public AdminController(IUserService userService,IRoleService roleService,
-            IStatusesService statusesService, IMapper mapper)
+            IStatusesService statusesService, IMapper mapper, IDepartmentService departmentService)
         {
+            _departmentService = departmentService;
             _statusesService = statusesService;
             _userService = userService;
             _roleService = roleService;
@@ -36,6 +38,7 @@ namespace EmployeeManagement.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
+            ViewBag.Departament = _departmentService.GetDepartments();
             ViewBag.Statuses = _statusesService.GetStatuses();
             ViewBag.Role = _roleService.GetRoles();
             return View(new UserViewModel());
@@ -52,14 +55,19 @@ namespace EmployeeManagement.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _userService.DeleteUser(id);
-            return RedirectToAction("Index", "Admin");
+          
+            var c = await _userService.DeleteUser(id);
+            if (c == true)
+                return RedirectToAction("Index", "Admin");
+            else
+                return View("Нельзя удалить данного пользователя, так как он является главой департамента");
         }
 
         [HttpGet]
         [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
+            ViewBag.Departament = _departmentService.GetDepartments();
             ViewBag.Statuses = _statusesService.GetStatuses();
             ViewBag.Role = _roleService.GetRoles();
             var user = _mapper.Map<UserViewModel>(_userService.GetUser(id));
@@ -73,6 +81,13 @@ namespace EmployeeManagement.Controllers
             await _userService.EditUser(user);
             return RedirectToAction("Index", "Admin");
         }
-        
+        public IActionResult RedirectToDepartament()
+        {
+            return RedirectToAction("Index","Departament");
+        }   
+        public IActionResult Exit()
+        { 
+            return RedirectToAction("Login", "Account");
+        }
     }
 }
