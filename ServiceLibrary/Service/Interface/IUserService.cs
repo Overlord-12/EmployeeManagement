@@ -14,5 +14,6 @@ namespace EmployeeManagement.Models.Service.Interface
         public Task<bool> CreateUser(User user);
         public Task<bool> DeleteUser(int id);
         public Task<bool> EditUser(User user);
+        public IEnumerable<User> GetEmployees();
     }
 }

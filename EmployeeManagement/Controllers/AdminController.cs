@@ -38,10 +38,12 @@ namespace EmployeeManagement.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
-            ViewBag.Departament = _departmentService.GetDepartments();
-            ViewBag.Statuses = _statusesService.GetStatuses();
-            ViewBag.Role = _roleService.GetRoles();
-            return View(new UserViewModel());
+            var user = new UserViewModel();
+            user.Users = _userService.GetUsers().Where(t => t.Role.RoleName == "headOfDepartament");
+            user.Statuses = _statusesService.GetStatuses();
+            user.Departments = _departmentService.GetDepartments();
+            user.Roles = _roleService.GetRoles();
+            return View(user);
         }
         [HttpPost]
         [Authorize(Roles = "admin")]
@@ -67,10 +69,11 @@ namespace EmployeeManagement.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
-            ViewBag.Departament = _departmentService.GetDepartments();
-            ViewBag.Statuses = _statusesService.GetStatuses();
-            ViewBag.Role = _roleService.GetRoles();
             var user = _mapper.Map<UserViewModel>(_userService.GetUser(id));
+            user.Users = _userService.GetUsers().Where(t => t.Role.RoleName == "headOfDepartament");
+            user.Statuses = _statusesService.GetStatuses();
+            user.Departments = _departmentService.GetDepartments();
+            user.Roles = _roleService.GetRoles();
             return View(user);
         }
         [HttpPost]
@@ -83,7 +86,7 @@ namespace EmployeeManagement.Controllers
         }
         public IActionResult RedirectToDepartament()
         {
-            return RedirectToAction("Index","Departament");
+            return RedirectToAction("Index","Department");
         }   
         public IActionResult Exit()
         { 

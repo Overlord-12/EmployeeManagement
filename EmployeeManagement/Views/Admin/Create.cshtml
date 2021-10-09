@@ -20,31 +20,40 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div>
+                <h3>Роль</h3>
                 <select asp-for="RoleId">
-                    @foreach (var item in ViewBag.Role)
+                    @foreach (var item in Model.Roles)
                     {
                         <option value="@item.Id">@item.RoleName</option>
                     }
                 </select>
             </div>
             <div>
+                <h3>Статус</h3>
                 <select asp-for="StatusId">
-                    @foreach (var item in ViewBag.Statuses)
+                    @foreach (var item in Model.Statuses)
                     {
                         <option value="@item.Id">@item.StatusName</option>
                     }
                 </select>
             </div>
             <div>
+                <h3>Департамент</h3>
                 <select asp-for="DepartmentId">
-                    @foreach (var item in ViewBag.Departament)
+                    @foreach (var item in Model.Departments)
                     {
                         <option value="@item.Id">@item.DepartmentName</option>
                     }
                 </select>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div>
+                <h3>Руководитель</h3>
+                <select asp-for="SupervisorId">
+                    @foreach (var item in Model.Users)
+                    {
+                        <option value="@item.Id">@item.Login</option>
+                    }
+                </select>
             </div>
         </form>
     </div>

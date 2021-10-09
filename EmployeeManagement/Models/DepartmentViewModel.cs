@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Models
 {
-    public class DepartamentViewModel
+    public class DepartmentViewModel
     {
         public int Id { get; set; }
         public string DepartmentName { get; set; }

@@ -16,6 +16,7 @@ namespace DataBase.Entities
         public bool ShowPreviousEvaluations { get; set; }
 
         public User DepartmentHead { get; set; }
+        public ICollection<Parameter> Parameters {get;set;}
         public ICollection<Selection> Selections { get; set; }
         public ICollection<User> Users { get; set; }
     }
