@@ -51,9 +51,22 @@
                 <select asp-for="SupervisorId">
                     @foreach (var item in Model.Users)
                     {
-                        <option value="@item.Id">@item.Login</option>
-                    }
+                        <option value="@item.Id"> @item.Login @item.Department.DepartmentName @item.Role.RoleName
+                            @*@if (item.RoleId == 4)
+                            {
+                                ($"{item.Login} - тимлид, {item.Department.DepartmentName} - департамента").ToString();
+                            }
+                            else
+                            {
+                                ($"{item.Login} - глава департамента, {item.Department.DepartmentName} - департамента").ToString();
+                            }*@
+
+                    </option>
+                }
                 </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

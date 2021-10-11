@@ -15,7 +15,7 @@ namespace EmployeeManagement.Models
         [Required(ErrorMessage = "No password specified")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        public int SupervisorId { get; set; }
+        public int? SupervisorId { get; set; }
         public int? RoleId { get; set; }
         public int? StatusId { get; set; }
         public int? DepartmentId { get; set; }

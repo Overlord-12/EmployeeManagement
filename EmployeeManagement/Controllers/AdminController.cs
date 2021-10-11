@@ -38,8 +38,9 @@ namespace EmployeeManagement.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
+            var check = _userService.GetUsers().Where(t => t.RoleId == 3 || t.RoleId == 4).ToList();
             var user = new UserViewModel();
-            user.Users = _userService.GetUsers().Where(t => t.Role.RoleName == "headOfDepartament");
+            user.Users = _userService.GetUsers().Where(t => t.RoleId == 3 || t.RoleId == 4).ToList();
             user.Statuses = _statusesService.GetStatuses();
             user.Departments = _departmentService.GetDepartments();
             user.Roles = _roleService.GetRoles();
@@ -70,7 +71,11 @@ namespace EmployeeManagement.Controllers
         public IActionResult Edit(int id)
         {
             var user = _mapper.Map<UserViewModel>(_userService.GetUser(id));
-            user.Users = _userService.GetUsers().Where(t => t.Role.RoleName == "headOfDepartament");
+            if(user.RoleId == 4)
+                user.Users = _userService.GetUsers().Where(t => t.Role.RoleName == "headOfDepartament");
+            else {
+               user.Users =  _userService.GetUsers().Where(t => t.RoleId == 4);
+            }
             user.Statuses = _statusesService.GetStatuses();
             user.Departments = _departmentService.GetDepartments();
             user.Roles = _roleService.GetRoles();
@@ -84,10 +89,17 @@ namespace EmployeeManagement.Controllers
             await _userService.EditUser(user);
             return RedirectToAction("Index", "Admin");
         }
+        [HttpGet]
         public IActionResult RedirectToDepartament()
         {
             return RedirectToAction("Index","Department");
-        }   
+        }
+        [HttpGet]
+        public IActionResult RedirectToParametr()
+        {
+            return RedirectToAction("Index", "Parametr");
+        }
+        [HttpGet]
         public IActionResult Exit()
         { 
             return RedirectToAction("Login", "Account");

@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Controllers
 {
-    public class DeprtmentController:Controller
+    public class DepartmentController : Controller
     {
         private readonly IDepartmentService _departmentService;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
-        public DeprtmentController(IDepartmentService departmentService,IMapper mapper, IUserService userService)
+        public DepartmentController(IDepartmentService departmentService, IMapper mapper, IUserService userService)
         {
             _departmentService = departmentService;
             _mapper = mapper;
@@ -32,39 +32,41 @@ namespace EmployeeManagement.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public IActionResult CreateDepartament()
+        public IActionResult CreateDepartment()
         {
-            ViewBag.Users = _userService.GetUsers();
-            return View();
+            DepartmentViewModel departmentViewModel = new DepartmentViewModel();
+            departmentViewModel.Users = _userService.GetFreeHeadofDepartament();
+            return View(departmentViewModel);
         }
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> CreateDepartament(DepartmentViewModel departamentViewModel)
+        public async Task<IActionResult> CreateDepartment(DepartmentViewModel departamentViewModel)
         {
             var department = _mapper.Map<Department>(departamentViewModel);
             await _departmentService.CreateDepartament(department);
-            return RedirectToAction("Index","Departament");
+            return RedirectToAction("Index", "Department");
         }
         [HttpGet]
         [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             _departmentService.DeleteDepartament(id);
-            return RedirectToAction("Index", "Departament");
+            return RedirectToAction("Index", "Department");
         }
         [HttpGet]
         [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
-            return View(_departmentService.GetDepartment(id));
+            var departament = _departmentService.GetDepartment(id);
+            return View(_mapper.Map<DepartmentViewModel>(departament));
         }
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "admin")]
         public IActionResult Edit(DepartmentViewModel departmentViewModel)
         {
             var department = _mapper.Map<Department>(departmentViewModel);
             _departmentService.EditDepartament(department);
-            return RedirectToAction("Index", "Departament");
+            return RedirectToAction("Index", "Department");
         }
     }
 }
