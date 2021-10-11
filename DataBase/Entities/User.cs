@@ -15,6 +15,7 @@ namespace DataBase.Entities
         public int RoleId { get; set; }
         public int StatusId { get; set; }
         public int? DepartmentId { get; set; }
+        public int SupervisorId { get; set; }
 
         public Department Department { get; set; }
         public Role Role { get; set; }

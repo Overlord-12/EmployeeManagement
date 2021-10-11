@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DataBase.Entities.Department>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>All departments</h1>
+
+<p>
+    <a asp-controller="Admin" asp-action="Index">Redirect to the desk</a>
+    <a asp-action="CreateDepartment">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartmentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShowPreviousEvaluations)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartmentHead)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShowPreviousEvaluations)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmentHeadId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

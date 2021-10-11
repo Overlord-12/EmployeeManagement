@@ -31,9 +31,15 @@ namespace ServiceLibrary.Service
             return _departamentRepository.EditDepartament(department);
         }
 
+        public Department GetDepartment(int id)
+        {
+           return _departamentRepository.GetDepartments().FirstOrDefault(t=>t.Id == id);
+        }
+
         public IEnumerable<Department> GetDepartments()
         {
             return _departamentRepository.GetDepartments();
         }
+
     }
 }

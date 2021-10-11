@@ -1,17 +1,18 @@
-﻿using System;
+﻿using DataBase.Entities;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace DataBase.Entities
+namespace EmployeeManagement.Models
 {
-    public class Parameter
+    public class ParametrViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public int Coefficient { get; set; }
-        public Department Department { get; set; }
+        public IEnumerable<Department> Departments { get; set; }
         public int? DepartmentId { get; set; }
 
         public ICollection<Evaluation> Evaluations { get; set; }

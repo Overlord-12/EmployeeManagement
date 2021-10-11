@@ -1,26 +1,25 @@
-﻿@model IEnumerable<DataBase.Entities.Department>
+﻿@model IEnumerable<DataBase.Entities.Parameter>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
+<h1>All parametrs</h1>
 <p>
+    <a asp-action="Create">Create New</a>
     <a asp-controller="Admin" asp-action="Index">Redirect to the desk</a>
-    <a asp-action="CreateDepartament">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DepartmentName)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ShowPreviousEvaluations)
+                @Html.DisplayNameFor(model => model.Coefficient)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DepartmentHead)
+                @Html.DisplayNameFor(model => model.Department)
             </th>
             <th></th>
         </tr>
@@ -29,16 +28,17 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.DepartmentName)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ShowPreviousEvaluations)
+                @Html.DisplayFor(modelItem => item.Coefficient)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DepartmentHeadId)
+                @Html.DisplayFor(modelItem => item.Department.DepartmentName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>

@@ -8,7 +8,7 @@ namespace EmployeeManagement.Models.Repositroy.Interface
 {
     public interface IUserRepository
     {
-        public IEnumerable<User> GetUsers();
+        public IQueryable<User> GetUsers();
         public  Task<bool> CreateUser(User user);
         public  Task<bool> DeleteUser(int id);
         public Task<bool> EditUser(User user);

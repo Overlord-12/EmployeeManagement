@@ -13,5 +13,6 @@ namespace ServiceLibrary.Service.Interface
         public Task<bool> CreateDepartament(Department department);
         public bool DeleteDepartament(int id);
         public Task<bool> EditDepartament(Department department);
+        public Department GetDepartment(int id);
     }
 }

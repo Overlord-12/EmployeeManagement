@@ -2,6 +2,7 @@
 using EmployeeManagement.Models.Repositroy;
 using EmployeeManagement.Models.Repositroy.Interface;
 using EmployeeManagement.Models.Service.Interface;
+using ServiceLibrary.Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,10 @@ namespace EmployeeManagement.Models.Service
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IDepartmentService _departmentService;
+        public UserService(IUserRepository userRepository, IDepartmentService departmentService)
         {
+            _departmentService = departmentService;
             _userRepository = userRepository;
         }
 
@@ -44,9 +47,22 @@ namespace EmployeeManagement.Models.Service
             return _userRepository.GetUsers().FirstOrDefault(t=>t.Id == id);
         }
 
-        public IEnumerable<User> GetUsers()
+        public IQueryable<User> GetUsers()
         {
             return _userRepository.GetUsers();
+        }
+        public IEnumerable<User> GetFreeHeadofDepartament()
+        {
+            List<User> users = new List<User>();
+            var _users = _userRepository.GetUsers().Where(t => t.Status.StatusName != "Уволен" && t.RoleId == 3);
+            var _departaments = _departmentService.GetDepartments();
+            foreach (var item in _users)
+            {
+                
+                    if (_departaments.FirstOrDefault(t=>t.DepartmentHeadId == item.Id)==null)
+                        users.Add(item);
+            }
+            return users;
         }
     }
 }

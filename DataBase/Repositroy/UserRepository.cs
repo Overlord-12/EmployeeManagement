@@ -64,9 +64,9 @@ namespace EmployeeManagement.Models.Repositroy
                 return false;
             }
         }
-        public IEnumerable<User> GetUsers()
+        public IQueryable<User> GetUsers()
         {
-            return _boardContext.Users.Include(t => t.Role).Include(t => t.Status).ToList();
+            return _boardContext.Users.Include(t => t.Role).Include(t => t.Status);
         }
     }
 }

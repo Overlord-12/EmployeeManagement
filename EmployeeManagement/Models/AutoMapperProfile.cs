@@ -13,8 +13,10 @@ namespace EmployeeManagement.Models
         {
             CreateMap<User, UserViewModel>();
             CreateMap<UserViewModel, User>();
-            CreateMap<DepartamentViewModel, Department>();
-            CreateMap<Department, DepartamentViewModel>();
+            CreateMap<DepartmentViewModel, Department>();
+            CreateMap<Department, DepartmentViewModel>();
+            CreateMap<Parameter, ParametrViewModel>();
+            CreateMap<ParametrViewModel, Parameter>();
         }
     }
 }
