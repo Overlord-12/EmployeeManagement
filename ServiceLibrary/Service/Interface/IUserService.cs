@@ -15,5 +15,8 @@ namespace EmployeeManagement.Models.Service.Interface
         public Task<bool> DeleteUser(int id);
         public Task<bool> EditUser(User user);
         public IEnumerable<User> GetFreeHeadofDepartament();
+        public IEnumerable<User> GetSubordinateUsers(int id);
+        public int GetById(string login);
+
     }
 }

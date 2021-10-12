@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataBase.Migrations
 {
     [DbContext(typeof(BoardContext))]
-    [Migration("20211007091322_initial")]
+    [Migration("20211011153228_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,7 +29,7 @@ namespace DataBase.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DepartmentHeadId")
+                    b.Property<int?>("DepartmentHeadId")
                         .HasColumnType("int");
 
                     b.Property<string>("DepartmentName")
@@ -117,11 +117,16 @@ namespace DataBase.Migrations
                     b.Property<int>("Coefficient")
                         .HasColumnType("int");
 
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Parametrs");
                 });
@@ -245,6 +250,9 @@ namespace DataBase.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SupervisorId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
@@ -262,7 +270,8 @@ namespace DataBase.Migrations
                             Login = "Employee",
                             Password = "123",
                             RoleId = 1,
-                            StatusId = 1
+                            StatusId = 1,
+                            SupervisorId = 4
                         },
                         new
                         {
@@ -286,7 +295,8 @@ namespace DataBase.Migrations
                             Login = "TeamLead",
                             Password = "123",
                             RoleId = 4,
-                            StatusId = 1
+                            StatusId = 1,
+                            SupervisorId = 3
                         });
                 });
 
@@ -295,8 +305,7 @@ namespace DataBase.Migrations
                     b.HasOne("DataBase.Entities.User", "DepartmentHead")
                         .WithMany("Departments")
                         .HasForeignKey("DepartmentHeadId")
-                        .HasConstraintName("FK_Departments_Users")
-                        .IsRequired();
+                        .HasConstraintName("FK_Departments_Users");
 
                     b.Navigation("DepartmentHead");
                 });
@@ -337,6 +346,15 @@ namespace DataBase.Migrations
                     b.Navigation("Parametr");
                 });
 
+            modelBuilder.Entity("DataBase.Entities.Parameter", b =>
+                {
+                    b.HasOne("DataBase.Entities.Department", "Department")
+                        .WithMany("Parameters")
+                        .HasForeignKey("DepartmentId");
+
+                    b.Navigation("Department");
+                });
+
             modelBuilder.Entity("DataBase.Entities.Selection", b =>
                 {
                     b.HasOne("DataBase.Entities.Department", "Department")
@@ -361,7 +379,8 @@ namespace DataBase.Migrations
                     b.HasOne("DataBase.Entities.Department", "Department")
                         .WithMany("Users")
                         .HasForeignKey("DepartmentId")
-                        .HasConstraintName("FK_Users_Departments");
+                        .HasConstraintName("FK_Users_Departments")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DataBase.Entities.Role", "Role")
                         .WithMany("Users")
@@ -384,6 +403,8 @@ namespace DataBase.Migrations
 
             modelBuilder.Entity("DataBase.Entities.Department", b =>
                 {
+                    b.Navigation("Parameters");
+
                     b.Navigation("Selections");
 
                     b.Navigation("Users");

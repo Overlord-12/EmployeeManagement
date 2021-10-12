@@ -27,7 +27,7 @@ namespace DataBase.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DepartmentHeadId")
+                    b.Property<int?>("DepartmentHeadId")
                         .HasColumnType("int");
 
                     b.Property<string>("DepartmentName")
@@ -248,7 +248,7 @@ namespace DataBase.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SupervisorId")
+                    b.Property<int?>("SupervisorId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -269,7 +269,7 @@ namespace DataBase.Migrations
                             Password = "123",
                             RoleId = 1,
                             StatusId = 1,
-                            SupervisorId = 0
+                            SupervisorId = 4
                         },
                         new
                         {
@@ -277,8 +277,7 @@ namespace DataBase.Migrations
                             Login = "Admin",
                             Password = "123",
                             RoleId = 2,
-                            StatusId = 1,
-                            SupervisorId = 0
+                            StatusId = 1
                         },
                         new
                         {
@@ -286,8 +285,7 @@ namespace DataBase.Migrations
                             Login = "Departament",
                             Password = "123",
                             RoleId = 3,
-                            StatusId = 1,
-                            SupervisorId = 0
+                            StatusId = 1
                         },
                         new
                         {
@@ -296,7 +294,7 @@ namespace DataBase.Migrations
                             Password = "123",
                             RoleId = 4,
                             StatusId = 1,
-                            SupervisorId = 0
+                            SupervisorId = 3
                         });
                 });
 
@@ -305,8 +303,7 @@ namespace DataBase.Migrations
                     b.HasOne("DataBase.Entities.User", "DepartmentHead")
                         .WithMany("Departments")
                         .HasForeignKey("DepartmentHeadId")
-                        .HasConstraintName("FK_Departments_Users")
-                        .IsRequired();
+                        .HasConstraintName("FK_Departments_Users");
 
                     b.Navigation("DepartmentHead");
                 });
@@ -380,7 +377,8 @@ namespace DataBase.Migrations
                     b.HasOne("DataBase.Entities.Department", "Department")
                         .WithMany("Users")
                         .HasForeignKey("DepartmentId")
-                        .HasConstraintName("FK_Users_Departments");
+                        .HasConstraintName("FK_Users_Departments")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DataBase.Entities.Role", "Role")
                         .WithMany("Users")

@@ -64,5 +64,15 @@ namespace EmployeeManagement.Models.Service
             }
             return users;
         }
+
+        public IEnumerable<User> GetSubordinateUsers(int id)
+        {
+            return _userRepository.GetUsers().Where(t => t.SupervisorId == id).ToList();
+        }
+        public int GetById(string login)
+        {
+            return _userRepository.GetUsers().FirstOrDefault(t=>t.Login == login).Id;
+        }
+
     }
 }

@@ -37,8 +37,11 @@ namespace EmployeeManagement.Controllers
                     if (user != null)
                     {
                         await Authenticate(user); // аутентификация
+                        if(user.RoleId == 2)
+                            return RedirectToAction("Index", "Admin");
+                        else if(user.RoleId == 4)
+                            return RedirectToAction("Index", "TeamLead");
 
-                        return RedirectToAction("Index", "Admin");
                     }
                     else
                         ModelState.AddModelError("Password", "Некорректные логин и(или) пароль");
