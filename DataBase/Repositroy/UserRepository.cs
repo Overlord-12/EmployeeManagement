@@ -55,18 +55,21 @@ namespace EmployeeManagement.Models.Repositroy
         {
             try
             {
-                _boardContext.Users.Update(user);
+                var rem = _boardContext.Users.FirstOrDefault(t => t.Id == user.Id);
+                _boardContext.Users.Remove(rem);
+                _boardContext.Users.Add(user);
                 await _boardContext.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                var c = ex.Message;
                 return false;
             }
         }
         public IQueryable<User> GetUsers()
         {
-            return _boardContext.Users.Include(t => t.Role).Include(t => t.Status);
+            return _boardContext.Users.Include(t => t.Role).Include(t => t.Status).Include(t => t.Department);
         }
     }
 }

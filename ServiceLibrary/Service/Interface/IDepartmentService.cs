@@ -11,7 +11,7 @@ namespace ServiceLibrary.Service.Interface
     {
         public IEnumerable<Department> GetDepartments();
         public Task<bool> CreateDepartament(Department department);
-        public bool DeleteDepartament(int id);
+        public Task<bool> DeleteDepartament(int id);
         public Task<bool> EditDepartament(Department department);
         public Department GetDepartment(int id);
     }

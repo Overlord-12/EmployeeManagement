@@ -21,9 +21,9 @@ namespace ServiceLibrary.Service
             return _departamentRepository.CreateDepartament(department);
         }
 
-        public bool DeleteDepartament(int id)
+        public  Task<bool> DeleteDepartament(int id)
         {
-            return _departamentRepository.DeleteDepartament(id);
+            return   _departamentRepository.DeleteDepartament(id);
         }
 
         public Task<bool> EditDepartament(Department department)

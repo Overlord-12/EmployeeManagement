@@ -38,7 +38,7 @@ namespace EmployeeManagement.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
-            var check = _userService.GetUsers().Where(t => t.RoleId == 3 || t.RoleId == 4).ToList();
+            var uus = new Evaluation();
             var user = new UserViewModel();
             user.Users = _userService.GetUsers().Where(t => t.RoleId == 3 || t.RoleId == 4).ToList();
             user.Statuses = _statusesService.GetStatuses();
@@ -70,24 +70,35 @@ namespace EmployeeManagement.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
-            var user = _mapper.Map<UserViewModel>(_userService.GetUser(id));
-            if(user.RoleId == 4)
-                user.Users = _userService.GetUsers().Where(t => t.Role.RoleName == "headOfDepartament");
-            else {
-               user.Users =  _userService.GetUsers().Where(t => t.RoleId == 4);
-            }
-            user.Statuses = _statusesService.GetStatuses();
-            user.Departments = _departmentService.GetDepartments();
-            user.Roles = _roleService.GetRoles();
+              var user = _mapper.Map<UserViewModel>(_userService.GetUser(id));
+            user = CreateTransitionalUser(user);
             return View(user);
+        }
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult CheckLogin(string Login)
+        {
+            if (_userService.GetUsers().FirstOrDefault(t => t.Login == Login) == null)
+                return Json(true);
+            return Json(false);
         }
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(UserViewModel userViewModel)
         {
-            var user = _mapper.Map<User>(userViewModel);
-            await _userService.EditUser(user);
-            return RedirectToAction("Index", "Admin");
+            if(_userService.GetUser(userViewModel.Id).Login == userViewModel.Login ||
+                    _userService.GetUsers().FirstOrDefault(t => t.Login == userViewModel.Login) == null)
+            {
+                var user = _mapper.Map<User>(userViewModel);
+                await _userService.EditUser(user);
+                return RedirectToAction("Index", "Admin");
+            }else
+            {
+                ModelState.AddModelError("Login", "Такой пользователь уже существует");
+                userViewModel = CreateTransitionalUser(userViewModel);
+                return View(userViewModel);
+            }
+                   
+
         }
         [HttpGet]
         public IActionResult RedirectToDepartament()
@@ -103,6 +114,19 @@ namespace EmployeeManagement.Controllers
         public IActionResult Exit()
         { 
             return RedirectToAction("Login", "Account");
+        }
+        public UserViewModel CreateTransitionalUser(UserViewModel user)
+        {
+            if (user.RoleId == 4)
+                user.Users = _userService.GetUsers().Where(t => t.Role.RoleName == "headOfDepartament");
+            else
+            {
+                user.Users = _userService.GetUsers().Where(t => t.RoleId == 4);
+            }
+            user.Statuses = _statusesService.GetStatuses();
+            user.Departments = _departmentService.GetDepartments();
+            user.Roles = _roleService.GetRoles();
+            return user;
         }
     }
 }

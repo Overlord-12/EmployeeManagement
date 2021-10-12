@@ -48,25 +48,33 @@ namespace EmployeeManagement.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _departmentService.DeleteDepartament(id);
+            await _departmentService.DeleteDepartament(id);
             return RedirectToAction("Index", "Department");
         }
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public IActionResult Edit(int id)
+        public  IActionResult Edit(int id)
         {
             var departament = _departmentService.GetDepartment(id);
             return View(_mapper.Map<DepartmentViewModel>(departament));
         }
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public IActionResult Edit(DepartmentViewModel departmentViewModel)
+        public async Task<IActionResult> Edit(DepartmentViewModel departmentViewModel)
         {
             var department = _mapper.Map<Department>(departmentViewModel);
-            _departmentService.EditDepartament(department);
+            await _departmentService.EditDepartament(department);
             return RedirectToAction("Index", "Department");
         }
+       [AcceptVerbs("Get","Post")]
+       public IActionResult CheckName(string DepartmentName)
+        {
+            if (_departmentService.GetDepartments().FirstOrDefault(t => t.DepartmentName == DepartmentName) == null)
+                return Json(true);
+            return Json(false);
+        }
+ 
     }
 }

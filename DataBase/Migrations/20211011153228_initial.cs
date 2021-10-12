@@ -8,20 +8,6 @@ namespace DataBase.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Parametrs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Coefficient = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Parametrs", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -45,6 +31,21 @@ namespace DataBase.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Statuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Parametrs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Coefficient = table.Column<int>(type: "int", nullable: false),
+                    DepartmentId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Parametrs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -100,7 +101,8 @@ namespace DataBase.Migrations
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false),
-                    DepartmentId = table.Column<int>(type: "int", nullable: true)
+                    DepartmentId = table.Column<int>(type: "int", nullable: true),
+                    SupervisorId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -126,7 +128,7 @@ namespace DataBase.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DepartmentName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DepartmentHeadId = table.Column<int>(type: "int", nullable: false),
+                    DepartmentHeadId = table.Column<int>(type: "int", nullable: true),
                     ShowPreviousEvaluations = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -198,13 +200,13 @@ namespace DataBase.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "DepartmentId", "Login", "Password", "RoleId", "StatusId" },
+                columns: new[] { "Id", "DepartmentId", "Login", "Password", "RoleId", "StatusId", "SupervisorId" },
                 values: new object[,]
                 {
-                    { 1, null, "Employee", "123", 1, 1 },
-                    { 2, null, "Admin", "123", 2, 1 },
-                    { 3, null, "Departament", "123", 3, 1 },
-                    { 4, null, "TeamLead", "123", 4, 1 }
+                    { 1, null, "Employee", "123", 1, 1, 4 },
+                    { 2, null, "Admin", "123", 2, 1, null },
+                    { 3, null, "Departament", "123", 3, 1, null },
+                    { 4, null, "TeamLead", "123", 4, 1, 3 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -233,6 +235,11 @@ namespace DataBase.Migrations
                 column: "ParametrId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Parametrs_DepartmentId",
+                table: "Parametrs",
+                column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Selections_DepartmentId",
                 table: "Selections",
                 column: "DepartmentId");
@@ -258,6 +265,14 @@ namespace DataBase.Migrations
                 column: "StatusId");
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Parametrs_Departaments_DepartmentId",
+                table: "Parametrs",
+                column: "DepartmentId",
+                principalTable: "Departaments",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Selections_Departments",
                 table: "Selections",
                 column: "DepartmentId",
@@ -271,7 +286,7 @@ namespace DataBase.Migrations
                 column: "DepartmentId",
                 principalTable: "Departaments",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.SetNull);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

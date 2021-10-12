@@ -12,7 +12,7 @@ namespace DataBase.Entities
 
         public int Id { get; set; }
         public string DepartmentName { get; set; }
-        public int DepartmentHeadId { get; set; }
+        public int? DepartmentHeadId { get; set; }
         public bool ShowPreviousEvaluations { get; set; }
 
         public User DepartmentHead { get; set; }

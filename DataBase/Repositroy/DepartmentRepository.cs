@@ -48,13 +48,13 @@ namespace DataBase.Repositroy
                 return false;
             }
         }
-        public  bool DeleteDepartament(int id)
+        public async Task<bool> DeleteDepartament(int id)
         {
             try
             {
                 var dep = _boardContext.Departaments.FirstOrDefault(t => t.Id == id);
                 _boardContext.Departaments.Remove(dep);
-                _boardContext.SaveChanges();
+                await _boardContext.SaveChangesAsync();
                 return true;
             }
             catch

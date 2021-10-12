@@ -1,4 +1,5 @@
 ﻿using DataBase.Entities;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,6 +12,7 @@ namespace EmployeeManagement.Models
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Login is not specified")]
+        [Remote(action: "CheckLogin", controller: "Admin", ErrorMessage = "Such a Login is already in use")]
         public string Login { get; set; }
         [Required(ErrorMessage = "No password specified")]
         [DataType(DataType.Password)]

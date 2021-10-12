@@ -25,6 +25,11 @@ namespace DataBase
             {
                 entity.Property(e => e.DepartmentName).IsRequired();
 
+
+                entity.HasMany(d => d.Users)
+                .WithOne(u => u.Department)
+                .OnDelete(DeleteBehavior.SetNull);
+
                 entity.HasOne(d => d.DepartmentHead)
                     .WithMany(p => p.Departments)
                     .HasForeignKey(d => d.DepartmentHeadId)
@@ -109,7 +114,7 @@ namespace DataBase
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.DepartmentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_Users_Departments");
 
                 entity.HasOne(d => d.Role)
@@ -138,13 +143,16 @@ namespace DataBase
             Status workStatuses = new Status { Id = 1, StatusName = workStatusName };
             Status dismissedStatues = new Status { Id = 2, StatusName = dismissedStatusName };
 
-            User employee = new User { Id = 1, Login = "Employee", Password = "123", RoleId = employeeRole.Id, StatusId = workStatuses.Id };
+            User employee = new User { Id = 1, Login = "Employee", Password = "123", RoleId = employeeRole.Id, StatusId = workStatuses.Id, SupervisorId = 4 };
             User admin = new User { Id = 2, Login = "Admin", Password = "123", RoleId = adminRole.Id, StatusId = workStatuses.Id };
-            User departament = new User { Id = 3, Login = "Departament", Password = "123", RoleId = departamentRole.Id, StatusId = workStatuses.Id };
-            User teamlead = new User { Id = 4, Login = "TeamLead", Password = "123", RoleId = teamleadRole.Id, StatusId = workStatuses.Id };
+            User departament = new User { Id = 3, Login = "Departament", Password = "123", RoleId = departamentRole.Id, StatusId = workStatuses.Id, };
+            User teamlead = new User { Id = 4, Login = "TeamLead", Password = "123", RoleId = teamleadRole.Id, StatusId = workStatuses.Id, SupervisorId = 3 };
+            //string itDepartamet = "IT";
+            //Department department = new Department { Id = 1, DepartmentName = itDepartamet, DepartmentHeadId = 3 };
 
             modelBuilder.Entity<Role>().HasData(new Role[] { adminRole, employeeRole, departamentRole, teamleadRole });
             modelBuilder.Entity<Status>().HasData(new Status[] { workStatuses, dismissedStatues });
+            //modelBuilder.Entity<Department>().HasData(new Department[] { department });
             modelBuilder.Entity<User>().HasData(new User[] { employee, admin, departament, teamlead });
             base.OnModelCreating(modelBuilder);
 
