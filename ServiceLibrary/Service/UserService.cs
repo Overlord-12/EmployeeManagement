@@ -65,6 +65,11 @@ namespace EmployeeManagement.Models.Service
             return users;
         }
 
+        public IEnumerable<User> GetLasEvaluationUser(int id)
+        {
+            var us = _userRepository.GetUsers().Where(t => t.SupervisorId == id).ToList();
+            return _userRepository.GetUsers().Where(t => t.SupervisorId == id).ToList();
+        }
         public IEnumerable<User> GetSubordinateUsers(int id)
         {
             return _userRepository.GetUsers().Where(t => t.SupervisorId == id).ToList();
@@ -74,5 +79,9 @@ namespace EmployeeManagement.Models.Service
             return _userRepository.GetUsers().FirstOrDefault(t=>t.Login == login).Id;
         }
 
+        public User Login(User user)
+        {
+             return _userRepository.Login(user);
+        }
     }
 }

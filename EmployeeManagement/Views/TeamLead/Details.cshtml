@@ -1,0 +1,58 @@
+﻿@model IEnumerable<DataBase.Entities.Evaluation>
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Mark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AssessmentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AssessmentNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MarkDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Assessor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Parameter)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mark)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssessmentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssessmentNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MarkDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssessorId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Parameter.Name)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

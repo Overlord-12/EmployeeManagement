@@ -1,4 +1,5 @@
-﻿using DataBase.Entities;
+﻿using AutoMapper;
+using DataBase.Entities;
 using EmployeeManagement.Models;
 using EmployeeManagement.Models.Service.Interface;
 using Microsoft.AspNetCore.Authentication;
@@ -15,8 +16,11 @@ namespace EmployeeManagement.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
-        public AccountController(IUserService userService)
+        private readonly IMapper _mapper;
+
+        public AccountController(IMapper mapper,IUserService userService)
         {
+            _mapper = mapper;
             _userService = userService;
         }
 
@@ -33,23 +37,25 @@ namespace EmployeeManagement.Controllers
             {
                 try
                 {
-                    User user = _userService.GetUser(new User {Login = model.Login,Password = model.Password});
+                    User user = _userService.Login(_mapper.Map<User>(model));
                     if (user != null)
                     {
                         await Authenticate(user); // аутентификация
-                        if(user.RoleId == 2)
+                        if (user.RoleId == 2)
                             return RedirectToAction("Index", "Admin");
-                        else if(user.RoleId == 4)
+                        else if (user.RoleId == 4)
                             return RedirectToAction("Index", "TeamLead");
+                        else if (user.RoleId == 3)
+                            return RedirectToAction("Index","HeadOfDepartment");
 
                     }
                     else
                         ModelState.AddModelError("Password", "Некорректные логин и(или) пароль");
                 }
-                catch (Exception exp)
+                catch
                 {
 
-                    ModelState.AddModelError("Password", exp.Message);
+                    ModelState.AddModelError("Password", "Некорректные логин и(или) пароль");
                 }
 
             }

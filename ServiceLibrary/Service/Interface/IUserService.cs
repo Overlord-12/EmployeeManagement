@@ -17,6 +17,7 @@ namespace EmployeeManagement.Models.Service.Interface
         public IEnumerable<User> GetFreeHeadofDepartament();
         public IEnumerable<User> GetSubordinateUsers(int id);
         public int GetById(string login);
+        public User Login(User user);
 
     }
 }

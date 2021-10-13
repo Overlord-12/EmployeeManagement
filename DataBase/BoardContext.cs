@@ -10,7 +10,6 @@ namespace DataBase
         public virtual DbSet<Status> Statuses { get; set; }
         public virtual DbSet<Selection> Selections { get; set; }
         public virtual DbSet<Parameter> Parametrs { get; set; }
-        public virtual DbSet<MarkDescription> MarksDescriptions { get; set; }
         public virtual DbSet<Evaluation> Evaluations { get; set; }
         public virtual DbSet<Department> Departaments { get; set; }
         public BoardContext(DbContextOptions<BoardContext> options)
@@ -57,19 +56,6 @@ namespace DataBase
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Evaluations_Users");
-            });
-
-            modelBuilder.Entity<MarkDescription>(entity =>
-            {
-                entity.Property(e => e.Specification)
-                    .IsRequired()
-                    .HasColumnName("MarkDescription");
-
-                entity.HasOne(d => d.Parametr)
-                    .WithMany(p => p.MarkDescriptions)
-                    .HasForeignKey(d => d.ParametrId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MarkDescriptions_Parameters");
             });
 
             modelBuilder.Entity<Parameter>(entity =>

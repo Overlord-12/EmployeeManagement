@@ -112,7 +112,8 @@ namespace EmployeeManagement.Controllers
         }
         [HttpGet]
         public IActionResult Exit()
-        { 
+        {
+            User.Identity.Name.Remove(_userService.GetById(User.Identity.Name));
             return RedirectToAction("Login", "Account");
         }
         public UserViewModel CreateTransitionalUser(UserViewModel user)

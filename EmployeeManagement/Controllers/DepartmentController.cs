@@ -17,6 +17,7 @@ namespace EmployeeManagement.Controllers
         private readonly IDepartmentService _departmentService;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
+        
         public DepartmentController(IDepartmentService departmentService, IMapper mapper, IUserService userService)
         {
             _departmentService = departmentService;
@@ -75,6 +76,7 @@ namespace EmployeeManagement.Controllers
                 return Json(true);
             return Json(false);
         }
- 
+  
+
     }
 }
