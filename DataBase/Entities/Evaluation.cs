@@ -16,6 +16,7 @@ namespace DataBase.Entities
         public int? AssessorId { get; set; }
         public DateTime AssessmentDate { get; set; }
         public int AssessmentNumber { get; set; }
+        public string MarkDescription { get; set; }
 
         public User Assessor { get; set; }
         public Parameter Parameter { get; set; }

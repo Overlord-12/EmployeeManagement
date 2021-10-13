@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>All Employee</h1>
+<h1>Index</h1>
 <table class="table">
     <thead>
         <tr>
@@ -51,8 +51,9 @@
                 @Html.DisplayFor(modelItem => item.Status.StatusName)
             </td>
             <td>
+                <a asp-action="TeamLeadMarks" asp-route-id="@item.Id">View all Matks</a> |
                 <a asp-action="Evaluation" asp-route-id="@item.Id">Put a grade</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">View all ratings</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
             </td>
         </tr>
 }

@@ -8,32 +8,39 @@ using ServiceLibrary.Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Globalization;
 using System.Threading.Tasks;
 
 namespace EmployeeManagement.Controllers
 {
-    public class TeamLeadController : Controller
+    public class HeadOfDepartmentController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IEvaluationService _evaluationService;
         private readonly IParametrService _parametrService;
         private readonly IMapper _mapper;
-        private readonly IEvaluationService _evaluationService;
-        public TeamLeadController(IEvaluationService evaluation ,IMapper mapper, IUserService userService, IParametrService parametrService)
+        public HeadOfDepartmentController(IMapper mapper, IParametrService parametrService, 
+            IEvaluationService evaluationService, IUserService userService)
         {
-            _evaluationService = evaluation;
             _mapper = mapper;
-            _userService = userService;
             _parametrService = parametrService;
+            _evaluationService = evaluationService;
+            _userService = userService;
         }
-        [Authorize(Roles = "teamRole")]
         [HttpGet]
+        [Authorize(Roles = "headOfDepartament")]
         public IActionResult Index()
         {
             var id = _userService.GetById(User.Identity.Name);
             return View(_userService.GetSubordinateUsers(id));
         }
-        [Authorize(Roles = "teamRole")]
+        [HttpGet]
+        [Authorize(Roles = "headOfDepartament")]
+        public IActionResult Details(int id)
+        {
+            var c = _userService.GetSubordinateUsers(id);
+            return View(_userService.GetSubordinateUsers(id));
+        }
+        [Authorize(Roles = "headOfDepartament")]
         [HttpGet]
         public IActionResult Evaluation(int id)
         {
@@ -46,21 +53,17 @@ namespace EmployeeManagement.Controllers
             };
             return View(eval);
         }
-        [Authorize(Roles = "teamRole")]
+        [Authorize(Roles = "headOfDepartament")]
         [HttpPost]
         public async Task<IActionResult> Evaluation(EvaluationViewModel evaluationViewModel)
         {
             var eval = _mapper.Map<Evaluation>(evaluationViewModel);
             await _evaluationService.CreateEvaluation(eval);
-            return RedirectToAction("Index","TeamLead");
+            return RedirectToAction("Index", "HeadOfDepartment");
         }
-        [Authorize(Roles = "teamRole")]
-        [HttpGet]
-        public IActionResult Details(int id)
+        public IActionResult TeamLeadMarks(int id)
         {
-            var c = _evaluationService.GetEvaluationFromUser(id);
             return View(_evaluationService.GetEvaluationFromUser(id));
         }
-
     }
 }

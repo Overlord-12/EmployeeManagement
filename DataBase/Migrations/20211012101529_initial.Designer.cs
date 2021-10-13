@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataBase.Migrations
 {
     [DbContext(typeof(BoardContext))]
-    [Migration("20211011153228_initial")]
+    [Migration("20211012101529_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,6 +65,9 @@ namespace DataBase.Migrations
                     b.Property<int>("Mark")
                         .HasColumnType("int");
 
+                    b.Property<string>("MarkDescription")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ParameterId")
                         .HasColumnType("int");
 
@@ -80,31 +83,6 @@ namespace DataBase.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Evaluations");
-                });
-
-            modelBuilder.Entity("DataBase.Entities.MarkDescription", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Mark")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ParametrId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Specification")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("MarkDescription");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParametrId");
-
-                    b.ToTable("MarksDescriptions");
                 });
 
             modelBuilder.Entity("DataBase.Entities.Parameter", b =>
@@ -336,16 +314,6 @@ namespace DataBase.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DataBase.Entities.MarkDescription", b =>
-                {
-                    b.HasOne("DataBase.Entities.Parameter", "Parametr")
-                        .WithMany("MarkDescriptions")
-                        .HasForeignKey("ParametrId")
-                        .HasConstraintName("FK_MarkDescriptions_Parameters");
-
-                    b.Navigation("Parametr");
-                });
-
             modelBuilder.Entity("DataBase.Entities.Parameter", b =>
                 {
                     b.HasOne("DataBase.Entities.Department", "Department")
@@ -413,8 +381,6 @@ namespace DataBase.Migrations
             modelBuilder.Entity("DataBase.Entities.Parameter", b =>
                 {
                     b.Navigation("Evaluations");
-
-                    b.Navigation("MarkDescriptions");
 
                     b.Navigation("Selections");
                 });

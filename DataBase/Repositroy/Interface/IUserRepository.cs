@@ -12,5 +12,6 @@ namespace EmployeeManagement.Models.Repositroy.Interface
         public  Task<bool> CreateUser(User user);
         public  Task<bool> DeleteUser(int id);
         public Task<bool> EditUser(User user);
+        public User Login(User model);
     }
 }

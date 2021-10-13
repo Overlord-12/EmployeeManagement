@@ -49,27 +49,6 @@ namespace DataBase.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MarksDescriptions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MarkDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Mark = table.Column<int>(type: "int", nullable: false),
-                    ParametrId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MarksDescriptions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MarkDescriptions_Parameters",
-                        column: x => x.ParametrId,
-                        principalTable: "Parametrs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Selections",
                 columns: table => new
                 {
@@ -153,7 +132,8 @@ namespace DataBase.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false),
                     AssessorId = table.Column<int>(type: "int", nullable: true),
                     AssessmentDate = table.Column<DateTime>(type: "date", nullable: false),
-                    AssessmentNumber = table.Column<int>(type: "int", nullable: false)
+                    AssessmentNumber = table.Column<int>(type: "int", nullable: false),
+                    MarkDescription = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -230,11 +210,6 @@ namespace DataBase.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MarksDescriptions_ParametrId",
-                table: "MarksDescriptions",
-                column: "ParametrId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Parametrs_DepartmentId",
                 table: "Parametrs",
                 column: "DepartmentId");
@@ -297,9 +272,6 @@ namespace DataBase.Migrations
 
             migrationBuilder.DropTable(
                 name: "Evaluations");
-
-            migrationBuilder.DropTable(
-                name: "MarksDescriptions");
 
             migrationBuilder.DropTable(
                 name: "Selections");
