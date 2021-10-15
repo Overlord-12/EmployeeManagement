@@ -1,7 +1,12 @@
 ﻿@model EmployeeManagement.Models.UserViewModel
-
+@using EmployeeManagement.Converter
+@Html.HiddenFor(x => x.Users)
 @{
     ViewData["Title"] = "Create";
+}
+@{
+    Serilise serilise = new Serilise();
+    var Array = Html.Raw(serilise.JsonConverts(Model.Users));
 }
 <h4>Create User</h4>
 <hr />
@@ -21,7 +26,8 @@
             </div>
             <div>
                 <h3>Роль</h3>
-                <select asp-for="RoleId">
+                <select id="3" onchange="selectRole(this.value)" asp-for="RoleId">
+                    <option selected disabled>Select role</option>
                     @foreach (var item in Model.Roles)
                     {
                         <option value="@item.Id">@item.RoleName</option>
@@ -31,42 +37,37 @@
             <div>
                 <h3>Статус</h3>
                 <select asp-for="StatusId">
+                    <option selected disabled>Select statuses</option>
                     @foreach (var item in Model.Statuses)
                     {
                         <option value="@item.Id">@item.StatusName</option>
                     }
                 </select>
             </div>
-            <div>
+            <div id="12">
                 <h3>Департамент</h3>
-                <select asp-for="DepartmentId">
+                <select id="1" onchange="selectDepartment()" asp-for="DepartmentId">
+                    <option selected disabled>Select department</option>
                     @foreach (var item in Model.Departments)
                     {
                         <option value="@item.Id">@item.DepartmentName</option>
                     }
                 </select>
             </div>
-            <div>
+            <div id="11">
                 <h3>Руководитель</h3>
-                <select asp-for="SupervisorId">
+                <select id="2" asp-for="SupervisorId">
+                    <option selected disabled>Select supervisor</option>
                     @foreach (var item in Model.Users)
                     {
-                        <option value="@item.Id"> @item.Login @item.Department.DepartmentName @item.Role.RoleName
-                            @*@if (item.RoleId == 4)
-                            {
-                                ($"{item.Login} - тимлид, {item.Department.DepartmentName} - департамента").ToString();
-                            }
-                            else
-                            {
-                                ($"{item.Login} - глава департамента, {item.Department.DepartmentName} - департамента").ToString();
-                            }*@
-
-                    </option>
-                }
+                        <option id="@item.DepartmentId@item.RoleId" value="@item.Id">
+                            @item.Login @item.Department.DepartmentName @item.Role.RoleName
+                        </option>
+                    }
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary compItem" />
             </div>
         </form>
     </div>
@@ -75,7 +76,40 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script>
+    function selectRole(Id) {
+
+        let role = Id;
+        let elem = document.getElementById(1).value;
+        if (role == 3 || role == 2) {
+                document.getElementById(12).hidden = true;
+                document.getElementById(11).hidden = true;
+        }
+        else {
+            document.getElementById(12).hidden = false;
+            document.getElementById(11).hidden = false;
+        }
+        selectDepartment();
+    }
+    function selectDepartment() {
+        let idDep = document.getElementById(1).value;
+        let optionList = document.getElementById('11').getElementsByTagName('option');
+        let supervisor = $.map($('#2 option'), function (e) { return e.id; });
+        let role = document.getElementById(3).value;
+        for (var i = 1; i < optionList.length; i++) {
+            var atr = supervisor[i]
+            if (atr[0] != idDep)
+                optionList[i].setAttribute('style', 'display:none;')
+            else if (atr[1] == 3 && role == 1)
+                optionList[i].setAttribute('style', 'display:none;')
+            else if (atr[1] == 4 && role == 4)
+                optionList[i].setAttribute('style', 'display:none;')
+            else
+                optionList[i].setAttribute('style', 'display:yes;')
+        }
+    }
+</script>

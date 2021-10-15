@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using ServiceLibrary.Service;
 using ServiceLibrary.Service.Interface;
 
@@ -69,7 +70,11 @@ namespace EmployeeManagement
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                Formatting = Newtonsoft.Json.Formatting.Indented,
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            };
             app.UseRouting();
 
             app.UseAuthentication();
