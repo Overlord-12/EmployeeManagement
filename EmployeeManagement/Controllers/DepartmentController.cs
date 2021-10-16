@@ -58,8 +58,9 @@ namespace EmployeeManagement.Controllers
         [Authorize(Roles = "admin")]
         public  IActionResult Edit(int id)
         {
-            var departament = _departmentService.GetDepartment(id);
-            return View(_mapper.Map<DepartmentViewModel>(departament));
+            var departament = _mapper.Map<DepartmentViewModel>(_departmentService.GetDepartment(id));
+            departament.Users = _userService.GetFreeHeadofDepartament();
+            return View(departament);
         }
         [HttpPost]
         [Authorize(Roles = "admin")]

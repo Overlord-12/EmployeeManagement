@@ -1,0 +1,33 @@
+﻿@model IEnumerable<DataBase.Entities.User>
+@{
+    var count = Model.ToList().Count;
+    var user = Model.ToList();
+}
+@foreach (var item in Model)
+{
+
+
+    @if (item.RoleId == 3)
+    {
+        <h3>Глава департамента</h3>
+        <div>@item.Login @item.Role.RoleName</div>
+        var c = item;
+        foreach (var sub in user)
+        {
+            if (sub.SupervisorId == c.Id)
+            {
+                <h3>Тимлиды</h3>
+                <p>@sub.Login @item.Role.RoleName</p>
+                var teamlead = sub.Id;
+                foreach (var employee in user)
+                {
+                    if (employee.SupervisorId == teamlead)
+                    {
+                        <p>@employee.Login @employee.Role.RoleName</p>
+                    }
+                }
+            }
+        }
+    }
+}
+

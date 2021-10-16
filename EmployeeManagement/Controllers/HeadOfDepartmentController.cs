@@ -33,6 +33,10 @@ namespace EmployeeManagement.Controllers
             var id = _userService.GetById(User.Identity.Name);
             return View(_userService.GetSubordinateUsers(id));
         }
+        public IActionResult AllEvaluation(int id)
+        {
+            return View(_evaluationService.GetEvaluationFromUser(id));
+        }
         [HttpGet]
         [Authorize(Roles = "headOfDepartament")]
         public IActionResult Details(int id)

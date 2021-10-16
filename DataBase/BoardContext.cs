@@ -54,7 +54,7 @@ namespace DataBase
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.EvaluationUsers)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Evaluations_Users");
             });
 
