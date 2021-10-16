@@ -18,15 +18,10 @@ namespace EmployeeManagement.Models.Repositroy
         }
         public async Task<bool> CreateUser(User user)
         {
-            //User userCreate = new User
-            //{
-            //    RoleId = user.RoleId,
-            //    StatuseId = user.StatuseId,
-            //    Name = user.Name,
-            //    Password = user.Password
-            //};
             try
             {
+                if (user.RoleId == 3 || user.RoleId == 2)
+                    user.SupervisorId = null;
                 _boardContext.Add(user);
                 await _boardContext.SaveChangesAsync();
                 return true;
@@ -35,7 +30,6 @@ namespace EmployeeManagement.Models.Repositroy
             {
                 return false;
             }
-
         }
         public async Task<bool> DeleteUser(int id)
         {
@@ -55,9 +49,9 @@ namespace EmployeeManagement.Models.Repositroy
         {
             try
             {
-                var rem = _boardContext.Users.FirstOrDefault(t => t.Id == user.Id);
-                _boardContext.Users.Remove(rem);
-                _boardContext.Users.Add(user);
+                if (user.RoleId == 3 || user.RoleId == 2)
+                    user.SupervisorId = null;
+                _boardContext.Update(user);
                 await _boardContext.SaveChangesAsync();
                 return true;
             }
@@ -76,6 +70,7 @@ namespace EmployeeManagement.Models.Repositroy
         {
             try
             {
+
                 var boardContext = _boardContext.Users.FirstOrDefault(t => t.Login == model.Login);
                 if (boardContext.Login != model.Login) throw new Exception();
                 var password = _boardContext.Users.FirstOrDefault(t => t.Login == model.Login).Password;

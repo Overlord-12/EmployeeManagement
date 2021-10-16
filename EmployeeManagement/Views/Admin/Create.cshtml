@@ -1,12 +1,7 @@
 ﻿@model EmployeeManagement.Models.UserViewModel
-@using EmployeeManagement.Converter
 @Html.HiddenFor(x => x.Users)
 @{
     ViewData["Title"] = "Create";
-}
-@{
-    Serilise serilise = new Serilise();
-    var Array = Html.Raw(serilise.JsonConverts(Model.Users));
 }
 <h4>Create User</h4>
 <hr />
@@ -61,7 +56,7 @@
                     @foreach (var item in Model.Users)
                     {
                         <option id="@item.DepartmentId@item.RoleId" value="@item.Id">
-                            @item.Login @item.Department.DepartmentName @item.Role.RoleName
+                            @item.Login @item.Role.RoleName
                         </option>
                     }
                 </select>

@@ -303,6 +303,7 @@ namespace DataBase.Migrations
                         .WithMany("EvaluationUsers")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_Evaluations_Users")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Assessor");

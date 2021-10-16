@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataBase.Migrations
 {
     [DbContext(typeof(BoardContext))]
-    [Migration("20211012101529_initial")]
-    partial class initial
+    [Migration("20211015154431_initial2")]
+    partial class initial2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -305,6 +305,7 @@ namespace DataBase.Migrations
                         .WithMany("EvaluationUsers")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_Evaluations_Users")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Assessor");

@@ -11,7 +11,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Mark" class="control-label"></label>
-                <input min="0" max="5" asp-for="Mark" class="form-control" />
+                <input min="1" max="5" asp-for="Mark" class="form-control" />
                 <span asp-validation-for="Mark" class="text-danger"></span>
             </div>
             <select asp-for="ParameterId">
@@ -26,7 +26,7 @@
             <input asp-for="AssessmentDate" type="hidden" value="@Model.AssessmentDate" class="form-control" />
             <div class="form-group">
                 <label asp-for="AssessmentNumber" class="control-label"></label>
-                <input min="0" asp-for="AssessmentNumber" class="form-control" />
+                <input min="1" asp-for="AssessmentNumber" class="form-control" />
                 <span asp-validation-for="AssessmentNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
