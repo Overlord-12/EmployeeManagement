@@ -3,31 +3,59 @@
     var count = Model.ToList().Count;
     var user = Model.ToList();
 }
-@foreach (var item in Model)
-{
+<style>
+    .content {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-justify-content: space-around;
+        justify-content: space-around;
+        -webkit-flex-flow: row wrap;
+        flex-flow: row wrap;
+        -webkit-align-items: stretch;
+        align-items: stretch;
+    }
 
-
-    @if (item.RoleId == 3)
+    .dep {
+        text-align: center;
+        flex-grow: 1;
+        border: 1px  solid;
+        background-color:whitesmoke;
+    }
+</style>
+<div class="content">
+    @foreach (var item in Model)
     {
-        <h3>Глава департамента</h3>
-        <div>@item.Login @item.Role.RoleName</div>
-        var c = item;
-        foreach (var sub in user)
+        @if (item.RoleId == 3)
         {
-            if (sub.SupervisorId == c.Id)
-            {
-                <h3>Тимлиды</h3>
-                <p>@sub.Login @item.Role.RoleName</p>
-                var teamlead = sub.Id;
-                foreach (var employee in user)
-                {
-                    if (employee.SupervisorId == teamlead)
+            var c = item;
+            <div class="dep">
+                <h3>Глава департамента</h3>
+                @item.Login 
+                <div>
+                    @foreach (var sub in user)
                     {
-                        <p>@employee.Login @employee.Role.RoleName</p>
+                        if (sub.SupervisorId == c.Id)
+                        {
+                            <h3>Тимлид</h3>
+                            <p>@sub.Login</p>
+                            var teamlead = sub.Id;
+                            <h3>Сотрудники</h3>
+                            foreach (var employee in user)
+                            {
+                                if (employee.SupervisorId == teamlead)
+                                {
+                                    <p>@employee.Login @employee.Role.RoleName</p>
+                                }
+                            }
+                        }
                     }
-                }
-            }
+                </div>
+            </div>
         }
     }
-}
+</div>
+<a href="##" onClick="history.go(-1); return false;">Previous page</a>
 

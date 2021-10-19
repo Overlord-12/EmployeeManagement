@@ -77,12 +77,6 @@ namespace DataBase
                     .HasForeignKey(d => d.DepartmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Selections_Departments");
-
-                entity.HasOne(d => d.Parameter)
-                    .WithMany(p => p.Selections)
-                    .HasForeignKey(d => d.ParameterId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Selections_Parameters");
             });
 
             modelBuilder.Entity<Status>(entity =>

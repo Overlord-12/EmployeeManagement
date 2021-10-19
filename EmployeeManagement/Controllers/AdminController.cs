@@ -20,9 +20,13 @@ namespace EmployeeManagement.Controllers
         private readonly IStatusesService _statusesService;
         private readonly IDepartmentService _departmentService;
         private readonly IMapper _mapper;
-        public AdminController(IUserService userService, IRoleService roleService,
+        private readonly IParametrService _parametrService;
+        private readonly ISelectionService _selectionService;
+        public AdminController(ISelectionService selectionServie, IParametrService parametrService, IUserService userService, IRoleService roleService,
             IStatusesService statusesService, IMapper mapper, IDepartmentService departmentService)
         {
+            _selectionService = selectionServie;
+            _parametrService = parametrService;
             _departmentService = departmentService;
             _statusesService = statusesService;
             _userService = userService;
@@ -74,8 +78,6 @@ namespace EmployeeManagement.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Details(int id)
         {
-            var test = _userService.GetUser(id);
-
             return View(_userService.GetUser(id));
         }
         [HttpGet]
@@ -93,6 +95,28 @@ namespace EmployeeManagement.Controllers
             if (_userService.GetUsers().FirstOrDefault(t => t.Login == Login) == null)
                 return Json(true);
             return Json(false);
+        }
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public IActionResult SelectDepartment()
+        {
+            return View(_departmentService.GetDepartments());
+        }
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public IActionResult Selections(int id)
+        {
+            SelectionViewModel selectionViewModel = new SelectionViewModel();
+            selectionViewModel.Parameters = _parametrService.GetParameters().Where(t => t.DepartmentId == id);
+            selectionViewModel.DepartmentId = id;
+            return View(selectionViewModel);
+        }
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Selections(SelectionViewModel selection, int[] Parametrs)
+        {
+            await _selectionService.CreateSelection(_mapper.Map<Selection>(selection), Parametrs);
+            return RedirectToAction("Index", "Admin");
         }
         [HttpPost]
         [Authorize(Roles = "admin")]

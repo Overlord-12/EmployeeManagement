@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using System.Threading.Tasks;
+using System.IO;
+using ClosedXML.Excel;
 
 namespace EmployeeManagement.Controllers
 {
@@ -19,8 +21,11 @@ namespace EmployeeManagement.Controllers
         private readonly IParametrService _parametrService;
         private readonly IMapper _mapper;
         private readonly IEvaluationService _evaluationService;
-        public TeamLeadController(IEvaluationService evaluation ,IMapper mapper, IUserService userService, IParametrService parametrService)
+        private readonly ISelectionService _selectionService;
+        public TeamLeadController(ISelectionService selectionService, IEvaluationService evaluation ,
+            IMapper mapper, IUserService userService, IParametrService parametrService)
         {
+            _selectionService = selectionService;
             _evaluationService = evaluation;
             _mapper = mapper;
             _userService = userService;
@@ -58,9 +63,60 @@ namespace EmployeeManagement.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var c = _evaluationService.GetEvaluationFromUser(id);
             return View(_evaluationService.GetEvaluationFromUser(id));
         }
+        [Authorize(Roles = "teamRole")]
+        [HttpPost]
+        public IActionResult ExportToExcel(SelectionViewModel selectionViewModel)
+        {
+            string name = selectionViewModel.SelectionName + ".xlsx";
+            var evaluation = _selectionService.GetEvaluations(selectionViewModel.SelectionId);
+            selectionViewModel.Evaluations = evaluation;
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Employees");
+                var currentRow = 1;
+                worksheet.Cell(currentRow, 1).Value = "Mark";
+                worksheet.Cell(currentRow, 2).Value = "Login";
+                worksheet.Cell(currentRow, 3).Value = "Parametr";
+                
+                foreach (var user in selectionViewModel.Evaluations)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = user.Mark;
+                    worksheet.Cell(currentRow, 2).Value = user.User.Login;
+                    worksheet.Cell(currentRow, 3).Value = user.Parameter.Name;
+                }
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", name);
+                }
+            }
+        }
+        [Authorize(Roles = "teamRole")]
+        [HttpGet]
+        public IActionResult Selection(IEnumerable<Evaluation> evaluations)
+        {
+            var departmentId = _userService.GetUser(_userService.GetById(User.Identity.Name)).DepartmentId;
+            ViewBag.Selection = _selectionService.GetSelectionsFromDepartment((int)departmentId);
+            var selectionViewModel = new SelectionViewModel();
+            selectionViewModel.Evaluations = evaluations;
+            return View(selectionViewModel);
+        }
+        [Authorize(Roles = "teamRole")]
+        [HttpPost]
+        public IActionResult Selection(SelectionViewModel selectionViewModel)
+        {
+            var evaluation = _selectionService.GetEvaluations(selectionViewModel.SelectionId);
+            selectionViewModel.Evaluations = evaluation;
+            selectionViewModel.SelectionName = _selectionService.GetSelection(selectionViewModel.SelectionId).SelectionName;
+            var departmentId = _userService.GetUser(_userService.GetById(User.Identity.Name)).DepartmentId;
+            ViewBag.Selection = _selectionService.GetSelectionsFromDepartment((int)departmentId);
+            return View(selectionViewModel);
+        }
+        
 
     }
 }

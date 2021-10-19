@@ -11,11 +11,9 @@ namespace DataBase.Entities
         public int Id { get; set; }
         public int DepartmentId { get; set; }
         public string SelectionName { get; set; }
-        public int ParameterId { get; set; }
-        public int Mark { get; set; }
+        public string SelectionQuery { get; set; }
 
         public Department Department { get; set; }
-        public Parameter Parameter { get; set; }
 
 
     }

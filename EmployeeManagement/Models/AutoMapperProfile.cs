@@ -19,6 +19,8 @@ namespace EmployeeManagement.Models
             CreateMap<ParametrViewModel, Parameter>();
             CreateMap<EvaluationViewModel, Evaluation>();
             CreateMap<Evaluation, EvaluationViewModel>();
+            CreateMap<Selection, SelectionViewModel>();
+            CreateMap<SelectionViewModel, Selection>();
         }
     }
 }
