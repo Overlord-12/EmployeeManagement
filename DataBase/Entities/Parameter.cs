@@ -15,6 +15,5 @@ namespace DataBase.Entities
         public int? DepartmentId { get; set; }
 
         public ICollection<Evaluation> Evaluations { get; set; }
-        public ICollection<Selection> Selections { get; set; }
     }
 }

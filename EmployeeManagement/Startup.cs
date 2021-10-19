@@ -45,6 +45,8 @@ namespace EmployeeManagement
             services.AddScoped<IParametrService, ParametrService>();
             services.AddScoped<IEvaluationRepository, EvaluationRepository>();
             services.AddScoped<IEvaluationService, EvaluationService>();
+            services.AddScoped<ISelectionService, SelectionService>();
+            services.AddScoped<ISelectionRepository, SelectionRepository>();
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

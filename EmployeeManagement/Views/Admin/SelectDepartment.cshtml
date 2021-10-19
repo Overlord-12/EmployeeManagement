@@ -1,0 +1,39 @@
+﻿@model IEnumerable<DataBase.Entities.Department>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartmentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShowPreviousEvaluations)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartmentHead)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShowPreviousEvaluations)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmentHead.Login)
+            </td>
+            <td>
+                <a asp-action="Selections" asp-route-id="@item.Id">Select Department</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

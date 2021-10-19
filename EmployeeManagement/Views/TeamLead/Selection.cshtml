@@ -1,0 +1,75 @@
+﻿@model EmployeeManagement.Models.SelectionViewModel
+<form asp-action="Selection" method="post">
+    <select asp-for="SelectionId">
+        @foreach (var item in ViewBag.Selection)
+        {
+            <option value="@item.Id">@item.SelectionName</option>
+        }
+    </select>
+    <div class="form-group">
+        <input type="submit" id="1" value="Select" class="btn btn-primary" />
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Evaluations
+            </th>
+            <th>
+                AssessmentDate
+            </th>
+            <th>
+                AssessmentNumber
+            </th>
+            <th>
+                MarkDescription
+            </th>
+            <th>
+                Assessor
+            </th>
+            <th>
+                Parameter
+            </th>
+            <th>
+                User
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Evaluations)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mark)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AssessmentDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AssessmentNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MarkDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Assessor.Login)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Parameter.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Login)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form asp-action="ExportToExcel" method="post">
+    <input type="hidden" asp-for="SelectionId" />
+    <input type="hidden" asp-for="SelectionName" />
+    <input type="hidden" asp-for="Parameters" />
+    <div class="form-group">
+        <input type="submit" value="Export" class="btn btn-primary" />
+    </div>
+</form>
