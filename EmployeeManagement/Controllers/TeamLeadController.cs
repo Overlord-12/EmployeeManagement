@@ -11,6 +11,7 @@ using System.Linq;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.IO;
+using System.Web;
 using ClosedXML.Excel;
 
 namespace EmployeeManagement.Controllers
@@ -22,7 +23,7 @@ namespace EmployeeManagement.Controllers
         private readonly IMapper _mapper;
         private readonly IEvaluationService _evaluationService;
         private readonly ISelectionService _selectionService;
-        public TeamLeadController(ISelectionService selectionService, IEvaluationService evaluation ,
+        public TeamLeadController(ISelectionService selectionService, IEvaluationService evaluation,
             IMapper mapper, IUserService userService, IParametrService parametrService)
         {
             _selectionService = selectionService;
@@ -57,7 +58,7 @@ namespace EmployeeManagement.Controllers
         {
             var eval = _mapper.Map<Evaluation>(evaluationViewModel);
             await _evaluationService.CreateEvaluation(eval);
-            return RedirectToAction("Index","TeamLead");
+            return RedirectToAction("Index", "TeamLead");
         }
         [Authorize(Roles = "teamRole")]
         [HttpGet]
@@ -70,48 +71,26 @@ namespace EmployeeManagement.Controllers
         public IActionResult ExportToExcel(SelectionViewModel selectionViewModel)
         {
             string name = selectionViewModel.SelectionName + ".xlsx";
-            var evaluation = _selectionService.GetEvaluations(selectionViewModel.SelectionId);
-            selectionViewModel.Evaluations = evaluation;
-            using (var workbook = new XLWorkbook())
-            {
-                var worksheet = workbook.Worksheets.Add("Employees");
-                var currentRow = 1;
-                worksheet.Cell(currentRow, 1).Value = "Mark";
-                worksheet.Cell(currentRow, 2).Value = "Login";
-                worksheet.Cell(currentRow, 3).Value = "Parametr";
-                
-                foreach (var user in selectionViewModel.Evaluations)
-                {
-                    currentRow++;
-                    worksheet.Cell(currentRow, 1).Value = user.Mark;
-                    worksheet.Cell(currentRow, 2).Value = user.User.Login;
-                    worksheet.Cell(currentRow, 3).Value = user.Parameter.Name;
-                }
-                using (var stream = new MemoryStream())
-                {
-                    workbook.SaveAs(stream);
-                    var content = stream.ToArray();
-                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", name);
-                }
-            }
+            var content = _selectionService.ExportSelection(_mapper.Map<Selection>(selectionViewModel));
+            return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", name);
         }
         [Authorize(Roles = "teamRole")]
         [HttpGet]
-        public IActionResult Selection(IEnumerable<Evaluation> evaluations)
+        public IActionResult Selection(IEnumerable<User> evaluations)
         {
             var departmentId = _userService.GetUser(_userService.GetById(User.Identity.Name)).DepartmentId;
             ViewBag.Selection = _selectionService.GetSelectionsFromDepartment((int)departmentId);
             var selectionViewModel = new SelectionViewModel();
-            selectionViewModel.Evaluations = evaluations;
+            selectionViewModel.Users = evaluations;
             return View(selectionViewModel);
         }
         [Authorize(Roles = "teamRole")]
         [HttpPost]
         public IActionResult Selection(SelectionViewModel selectionViewModel)
         {
-            var evaluation = _selectionService.GetEvaluations(selectionViewModel.SelectionId);
-            selectionViewModel.Evaluations = evaluation;
-            selectionViewModel.SelectionName = _selectionService.GetSelection(selectionViewModel.SelectionId).SelectionName;
+            var evaluation = _selectionService.GetUsers(selectionViewModel.Id);
+            selectionViewModel.Users = evaluation;
+            selectionViewModel.SelectionName = _selectionService.GetSelection(selectionViewModel.Id).SelectionName;
             var departmentId = _userService.GetUser(_userService.GetById(User.Identity.Name)).DepartmentId;
             ViewBag.Selection = _selectionService.GetSelectionsFromDepartment((int)departmentId);
             return View(selectionViewModel);

@@ -29,11 +29,20 @@ namespace DataBase.Repositroy
             }
            
         }
-        public IEnumerable<Evaluation> GetEvaluations(int id)
+        public IEnumerable<User> GetUsers(int id)
         {
-            var selection = _boardContext.Selections.FirstOrDefault(t => t.Id == id);
-            var users = _boardContext.Evaluations.FromSqlRaw(selection.SelectionQuery).Include(t=>t.User).Include(t=>t.Parameter).ToList();
-            return users;
+            try
+            {
+                var selection = _boardContext.Selections.FirstOrDefault(t => t.Id == id);
+                var users = _boardContext.Users.FromSqlRaw(selection.SelectionQuery).Include(t=>t.Department).Include(t=>t.Role).ToList();
+                return users;
+            }
+            catch(Exception)
+            {
+                IEnumerable<User> evaluation = new List<User>();
+                return evaluation;
+            }
+           
         }
         public IEnumerable<Selection> GetSelectionsFromDepartment(int id)
         {
