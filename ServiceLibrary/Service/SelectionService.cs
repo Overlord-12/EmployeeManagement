@@ -1,8 +1,11 @@
-﻿using DataBase.Entities;
+﻿using ClosedXML.Excel;
+using DataBase.Entities;
 using DataBase.Repositroy.Interface;
 using ServiceLibrary.Service.Interface;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,10 +21,11 @@ namespace ServiceLibrary.Service
         }
         public Task CreateSelection(Selection selection, int[] param)
         {
-            string selectionString = $"SELECT TOP(5) ev.*, us.Login, par.Coefficient, par.Name  \n" +
-                                    $"FROM Evaluations ev \n" +
-                                    $"inner join Users us on us.Id = ev.UserId \n" +
-                                    $"inner join Parametrs par on par.Id = ev.ParameterId \n";
+            string selectionString = $"SELECT TOP(5) us.*, ev1.total \n" +
+                                     $"from Users us \n" +
+                                    $"inner join(select ev.UserId, sum(ev.Mark* par.Coefficient) as total \n" +
+                                    $"from Evaluations ev \n" +
+                                    $"inner join Parametrs par on par.Id = ParameterId \n";
             for (int i = 0; i < param.Length; i++)
             {
                 if (i == 0)
@@ -31,14 +35,15 @@ namespace ServiceLibrary.Service
                 else
                     selectionString += $" or ev.ParameterId = {param[i]}";
             }
-            selectionString += "order by ev.Mark * par.Coefficient DESC";
+            selectionString += $"group by ev.UserId) as ev1 on us.Id = ev1.UserId \n" +
+                               $"order by ev1.total DESC \n";
             selection.SelectionQuery = selectionString;
             return _selectionRepository.CreateSelection(selection);
         }
 
-        public IEnumerable<Evaluation> GetEvaluations(int id)
+        public IEnumerable<User> GetUsers(int id)
         {
-            return _selectionRepository.GetEvaluations(id);
+            return _selectionRepository.GetUsers(id);
         }
 
         public Selection GetSelection(int id)
@@ -54,6 +59,36 @@ namespace ServiceLibrary.Service
         public IEnumerable<Selection> Selections()
         {
             return _selectionRepository.Selections();
+        }
+
+        public byte[] ExportSelection(Selection selection)
+        {
+            var evaluation = _selectionRepository.GetUsers(selection.Id);
+            var users  = evaluation;
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Employees");
+                var currentRow = 1;
+                worksheet.Cell(currentRow, 1).Value = "Id";
+                worksheet.Cell(currentRow, 2).Value = "Login";
+                worksheet.Cell(currentRow, 3).Value = "Role";
+                worksheet.Cell(currentRow, 4).Value = "Parametr";
+
+                foreach (var user in users)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = user.Id;
+                    worksheet.Cell(currentRow, 2).Value = user.Login;
+                    worksheet.Cell(currentRow, 3).Value = user.Role.RoleName;
+                    worksheet.Cell(currentRow, 4).Value = user.Department.DepartmentName;
+                }
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return content;
+                }
+            }
         }
     }
 }

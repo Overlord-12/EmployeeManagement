@@ -12,7 +12,7 @@ namespace EmployeeManagement.Models
         public string SelectionName { get; set; }
         public string SelectionQuery { get; set; }
         public int DepartmentId { get; set; }
-        public int SelectionId { get; set; }
-        public IEnumerable<Evaluation> Evaluations { get; set; }
+        public int Id { get; set; }
+        public IEnumerable<User> Users { get; set; }
     }
 }
