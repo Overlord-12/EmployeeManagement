@@ -55,9 +55,9 @@
         <input type="submit" value="Export" class="btn btn-primary" />
     </div>
 </form>
-<form asp-action="InptortFromExcel" method="post">
-    <input type="file" value="Select file" name="fileExcel" id="fileExcel"/>
+<form asp-action="Import" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <input type="submit" value="Import" class="btn btn-primary" />
+        <input type="file" value="Select file" name="file"/>
+        <button type="submit">Import from Excel</button>
     </div>
 </form>

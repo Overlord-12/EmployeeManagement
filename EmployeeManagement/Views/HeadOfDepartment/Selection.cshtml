@@ -30,20 +30,20 @@
     <tbody>
         @foreach (var item in Model.Users)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Login)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Department.DepartmentName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Role.RoleName)
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Login)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role.RoleName)
+                </td>
+            </tr>
         }
     </tbody>
 </table>
@@ -53,5 +53,11 @@
     <input type="hidden" asp-for="Parameters" />
     <div class="form-group">
         <input type="submit" value="Export" class="btn btn-primary" />
+    </div>
+</form>
+<form asp-action="Import" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <input type="file" value="Select file" name="file" />
+        <button type="submit">Import from Excel</button>
     </div>
 </form>

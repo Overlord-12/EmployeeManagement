@@ -36,8 +36,6 @@ namespace DataBase.Repositroy
         {
             try
             {
-                Department dep = department;
-                dep.DepartmentHead = _boardContext.Users.FirstOrDefault(t=>t.Id==department.Id);
                 _boardContext.Departaments.Update(department);
                 await _boardContext.SaveChangesAsync();
                 return true;

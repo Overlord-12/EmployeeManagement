@@ -1,4 +1,5 @@
 ﻿using DataBase.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,7 @@ namespace ServiceLibrary.Service.Interface
         public IEnumerable<Selection> Selections();
         public Task CreateSelection(Selection selection,int[] param);
         public byte[] ExportSelection(Selection selection);
+        public  Task<List<User>> ImportFromExcel(IFormFile file);
         public IEnumerable<Selection> GetSelectionsFromDepartment(int id);
         public IEnumerable<User> GetUsers(int id);
         public Selection GetSelection(int id);
