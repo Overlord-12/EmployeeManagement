@@ -3,16 +3,15 @@ using DataBase.Entities;
 using EmployeeManagement.Models;
 using EmployeeManagement.Models.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
 using ServiceLibrary.Service.Interface;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Globalization;
-using System.Threading.Tasks;
 using System.IO;
-using System.Web;
-using ClosedXML.Excel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EmployeeManagement.Controllers
 {
@@ -74,14 +73,27 @@ namespace EmployeeManagement.Controllers
             var content = _selectionService.ExportSelection(_mapper.Map<Selection>(selectionViewModel));
             return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", name);
         }
+
+        
+        [Authorize(Roles = "teamRole")]
+        [HttpPost]
+        public async Task<IActionResult> Import(IFormFile file)
+        {
+            var users = await _selectionService.ImportFromExcel(file);
+            var selectionViewModel = new SelectionViewModel();
+            selectionViewModel.Users = users;
+            var departmentId = _userService.GetUser(_userService.GetById(User.Identity.Name)).DepartmentId;
+            ViewBag.Selection = _selectionService.GetSelectionsFromDepartment((int)departmentId);
+            return View("Selection", selectionViewModel);
+        }
         [Authorize(Roles = "teamRole")]
         [HttpGet]
-        public IActionResult Selection(IEnumerable<User> evaluations)
+        public IActionResult Selection()
         {
             var departmentId = _userService.GetUser(_userService.GetById(User.Identity.Name)).DepartmentId;
             ViewBag.Selection = _selectionService.GetSelectionsFromDepartment((int)departmentId);
             var selectionViewModel = new SelectionViewModel();
-            selectionViewModel.Users = evaluations;
+            selectionViewModel.Users = new List<User>();
             return View(selectionViewModel);
         }
         [Authorize(Roles = "teamRole")]
@@ -95,7 +107,8 @@ namespace EmployeeManagement.Controllers
             ViewBag.Selection = _selectionService.GetSelectionsFromDepartment((int)departmentId);
             return View(selectionViewModel);
         }
-        
+
 
     }
 }
+

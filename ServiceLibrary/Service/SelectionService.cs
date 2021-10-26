@@ -1,6 +1,8 @@
 ﻿using ClosedXML.Excel;
 using DataBase.Entities;
 using DataBase.Repositroy.Interface;
+using Microsoft.AspNetCore.Http;
+using OfficeOpenXml;
 using ServiceLibrary.Service.Interface;
 using System;
 using System.Collections.Generic;
@@ -72,7 +74,7 @@ namespace ServiceLibrary.Service
                 worksheet.Cell(currentRow, 1).Value = "Id";
                 worksheet.Cell(currentRow, 2).Value = "Login";
                 worksheet.Cell(currentRow, 3).Value = "Role";
-                worksheet.Cell(currentRow, 4).Value = "Parametr";
+                worksheet.Cell(currentRow, 4).Value = "Department";
 
                 foreach (var user in users)
                 {
@@ -89,6 +91,37 @@ namespace ServiceLibrary.Service
                     return content;
                 }
             }
+        }
+
+        public async Task<List<User>> ImportFromExcel(IFormFile file)
+        {
+            var list = new List<User>();
+            using (var stream = new MemoryStream())
+            {
+                await file.CopyToAsync(stream);
+                using (var package = new ExcelPackage(stream))
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                    var rowcount = worksheet.Dimension.Rows;
+                    for (int row = 2; row <= rowcount; row++)
+                    {
+                        list.Add(new User
+                        {
+                            Id = Convert.ToInt32(worksheet.Cells[row, 1].Value.ToString().Trim()),
+                            Login = worksheet.Cells[row, 2].Value.ToString().Trim(),
+                            Role = new Role
+                            {
+                                RoleName = worksheet.Cells[row, 3].Value.ToString().Trim()
+                            },
+                            Department = new Department
+                            {
+                                DepartmentName = worksheet.Cells[row, 4].Value.ToString().Trim()
+                            }
+                        });
+                    }
+                }
+            }
+            return list;
         }
     }
 }

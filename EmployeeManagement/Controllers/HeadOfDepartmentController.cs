@@ -4,6 +4,7 @@ using DataBase.Entities;
 using EmployeeManagement.Models;
 using EmployeeManagement.Models.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLibrary.Service.Interface;
 using System;
@@ -84,9 +85,20 @@ namespace EmployeeManagement.Controllers
             return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", name);
         }
         [Authorize(Roles = "headOfDepartament")]
+        [HttpPost]
+        public async Task<IActionResult> Import(IFormFile file)
+        {
+            var users = await _selectionService.ImportFromExcel(file);
+            var selectionViewModel = new SelectionViewModel();
+            selectionViewModel.Users = users;
+            var departmentId = _departmentService.GetDepartments().FirstOrDefault(t => t.DepartmentHeadId == _userService.GetById(User.Identity.Name)).Id;
+            ViewBag.Selection = _selectionService.GetSelectionsFromDepartment((int)departmentId);
+            return View("Selection", selectionViewModel);
+        }
+        [Authorize(Roles = "headOfDepartament")]
         [HttpGet]
         public IActionResult Selection(IEnumerable<User> evaluations)
-        {
+        { 
             var departmentId = _departmentService.GetDepartments().FirstOrDefault(t => t.DepartmentHeadId == _userService.GetById(User.Identity.Name)).Id;
             ViewBag.Selection = _selectionService.GetSelectionsFromDepartment((int)departmentId);
             var selectionViewModel = new SelectionViewModel();

@@ -138,16 +138,6 @@ namespace EmployeeManagement.Controllers
             }
         }
         [HttpGet]
-        public IActionResult RedirectToDepartament()
-        {
-            return RedirectToAction("Index", "Department");
-        }
-        [HttpGet]
-        public IActionResult RedirectToParametr()
-        {
-            return RedirectToAction("Index", "Parametr");
-        }
-        [HttpGet]
         public async Task<IActionResult> ExitAsync()
         {
             await HttpContext.SignOutAsync();
