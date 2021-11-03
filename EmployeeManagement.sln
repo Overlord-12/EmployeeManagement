@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBase", "DataBase\DataBa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLibrary", "ServiceLibrary\ServiceLibrary.csproj", "{93D732F5-2AA3-41F8-BBC6-42EC94631A4C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeManagementUnitTests", "EmployeeManagementUnitTests\EmployeeManagementUnitTests.csproj", "{C402B567-D699-4CD2-98B8-9AD70C7F9B52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{93D732F5-2AA3-41F8-BBC6-42EC94631A4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93D732F5-2AA3-41F8-BBC6-42EC94631A4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93D732F5-2AA3-41F8-BBC6-42EC94631A4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C402B567-D699-4CD2-98B8-9AD70C7F9B52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C402B567-D699-4CD2-98B8-9AD70C7F9B52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C402B567-D699-4CD2-98B8-9AD70C7F9B52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C402B567-D699-4CD2-98B8-9AD70C7F9B52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
