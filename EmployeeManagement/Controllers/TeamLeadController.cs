@@ -22,6 +22,7 @@ namespace EmployeeManagement.Controllers
         private readonly IMapper _mapper;
         private readonly IEvaluationService _evaluationService;
         private readonly ISelectionService _selectionService;
+
         public TeamLeadController(ISelectionService selectionService, IEvaluationService evaluation,
             IMapper mapper, IUserService userService, IParametrService parametrService)
         {
@@ -31,6 +32,7 @@ namespace EmployeeManagement.Controllers
             _userService = userService;
             _parametrService = parametrService;
         }
+
         [Authorize(Roles = "teamRole")]
         [HttpGet]
         public IActionResult Index()
@@ -38,6 +40,7 @@ namespace EmployeeManagement.Controllers
             var id = _userService.GetById(User.Identity.Name);
             return View(_userService.GetSubordinateUsers(id));
         }
+
         [Authorize(Roles = "teamRole")]
         [HttpGet]
         public IActionResult Evaluation(int id)
@@ -51,6 +54,7 @@ namespace EmployeeManagement.Controllers
             };
             return View(eval);
         }
+
         [Authorize(Roles = "teamRole")]
         [HttpPost]
         public async Task<IActionResult> Evaluation(EvaluationViewModel evaluationViewModel)
@@ -59,12 +63,14 @@ namespace EmployeeManagement.Controllers
             await _evaluationService.CreateEvaluation(eval);
             return RedirectToAction("Index", "TeamLead");
         }
+
         [Authorize(Roles = "teamRole")]
         [HttpGet]
         public IActionResult Details(int id)
         {
             return View(_evaluationService.GetEvaluationFromUser(id));
         }
+
         [Authorize(Roles = "teamRole")]
         [HttpPost]
         public IActionResult ExportToExcel(SelectionViewModel selectionViewModel)
@@ -73,7 +79,6 @@ namespace EmployeeManagement.Controllers
             var content = _selectionService.ExportSelection(_mapper.Map<Selection>(selectionViewModel));
             return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", name);
         }
-
         
         [Authorize(Roles = "teamRole")]
         [HttpPost]
@@ -86,6 +91,7 @@ namespace EmployeeManagement.Controllers
             ViewBag.Selection = _selectionService.GetSelectionsFromDepartment((int)departmentId);
             return View("Selection", selectionViewModel);
         }
+
         [Authorize(Roles = "teamRole")]
         [HttpGet]
         public IActionResult Selection()
@@ -96,6 +102,7 @@ namespace EmployeeManagement.Controllers
             selectionViewModel.Users = new List<User>();
             return View(selectionViewModel);
         }
+
         [Authorize(Roles = "teamRole")]
         [HttpPost]
         public IActionResult Selection(SelectionViewModel selectionViewModel)

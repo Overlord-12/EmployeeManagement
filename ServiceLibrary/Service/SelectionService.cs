@@ -22,25 +22,8 @@ namespace ServiceLibrary.Service
             _selectionRepository = selectionRepository;
         }
         public Task CreateSelection(Selection selection, int[] param)
-        {
-            string selectionString = $"SELECT TOP(5) us.*, ev1.total \n" +
-                                     $"from Users us \n" +
-                                    $"inner join(select ev.UserId, sum(ev.Mark* par.Coefficient) as total \n" +
-                                    $"from Evaluations ev \n" +
-                                    $"inner join Parametrs par on par.Id = ParameterId \n";
-            for (int i = 0; i < param.Length; i++)
-            {
-                if (i == 0)
-                    selectionString += $"where ev.ParameterId = {param[i]}";
-                else if (i == param.Length - 1)
-                    selectionString += $" or ev.ParameterId = {param[i]} \n and DATEDIFF(MONTH,ev.AssessmentDate,GETDATE()) < 3";
-                else
-                    selectionString += $" or ev.ParameterId = {param[i]}";
-            }
-            selectionString += $"group by ev.UserId) as ev1 on us.Id = ev1.UserId \n" +
-                               $"order by ev1.total DESC \n";
-            selection.SelectionQuery = selectionString;
-            return _selectionRepository.CreateSelection(selection);
+        {    
+            return _selectionRepository.CreateSelection(selection, param);
         }
 
         public IEnumerable<User> GetUsers(int id)
@@ -50,7 +33,7 @@ namespace ServiceLibrary.Service
 
         public Selection GetSelection(int id)
         {
-            return _selectionRepository.Selections().FirstOrDefault(t => t.Id == id);
+            return _selectionRepository.GetSelections().FirstOrDefault(t => t.Id == id);
         }
 
         public IEnumerable<Selection> GetSelectionsFromDepartment(int id)
@@ -60,7 +43,7 @@ namespace ServiceLibrary.Service
 
         public IEnumerable<Selection> Selections()
         {
-            return _selectionRepository.Selections();
+            return _selectionRepository.GetSelections();
         }
 
         public byte[] ExportSelection(Selection selection)

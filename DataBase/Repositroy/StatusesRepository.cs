@@ -11,10 +11,12 @@ namespace DataBase.Repositroy
     public class StatusesRepository : IStatusesRepository
     {
         private readonly BoardContext _boardContext;
+
         public StatusesRepository(BoardContext boardContext)
         {
             _boardContext = boardContext;
         }
+
         public IEnumerable<Status> GetStatuses()
         {
             return _boardContext.Statuses.ToList();

@@ -12,6 +12,7 @@ namespace DataBase.Repositroy
     public class EvaluationRepository : IEvaluationRepository
     {
         private readonly BoardContext _boardContext;
+
         public EvaluationRepository(BoardContext boardContext)
         {
             _boardContext = boardContext;

@@ -11,7 +11,9 @@ namespace ServiceLibrary.Service
 {
     public class ParametrService : IParametrService
     {
+
         private readonly IParametrRepository _parametrRepository;
+
         public ParametrService(IParametrRepository parametrRepository)
         {
             _parametrRepository = parametrRepository;

@@ -69,17 +69,20 @@ namespace EmployeeManagement.Controllers
             else
                 return View("Нельзя удалить данного пользователя, так как он является главой департамента");
         }
+
         [HttpGet]
         public IActionResult Subordinate()
         {
             return View(_userService.GetUsers());
         }
+
         [HttpGet]
         [Authorize(Roles = "admin")]
         public IActionResult Details(int id)
         {
             return View(_userService.GetUser(id));
         }
+
         [HttpGet]
         [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
@@ -89,6 +92,7 @@ namespace EmployeeManagement.Controllers
             user.Users = _userService.GetUsers().Where(t => t.RoleId == 3 || t.RoleId == 4).ToList();
             return View(user);
         }
+
         [AcceptVerbs("Get", "Post")]
         public IActionResult CheckLogin(string Login)
         {
@@ -96,12 +100,14 @@ namespace EmployeeManagement.Controllers
                 return Json(true);
             return Json(false);
         }
+
         [HttpGet]
         [Authorize(Roles = "admin")]
         public IActionResult SelectDepartment()
         {
             return View(_departmentService.GetDepartments());
         }
+
         [HttpGet]
         [Authorize(Roles = "admin")]
         public IActionResult Selections(int id)
@@ -111,6 +117,7 @@ namespace EmployeeManagement.Controllers
             selectionViewModel.DepartmentId = id;
             return View(selectionViewModel);
         }
+
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Selections(SelectionViewModel selection, int[] Parametrs)
@@ -118,6 +125,7 @@ namespace EmployeeManagement.Controllers
             await _selectionService.CreateSelection(_mapper.Map<Selection>(selection), Parametrs);
             return RedirectToAction("Index", "Admin");
         }
+
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(UserViewModel userViewModel)
@@ -143,6 +151,7 @@ namespace EmployeeManagement.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("Login", "Account");
         }
+
         public UserViewModel CreateTransitionalUser(UserViewModel user)
         {
             if (user.RoleId == 4)

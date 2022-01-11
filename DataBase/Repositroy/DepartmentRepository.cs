@@ -12,10 +12,12 @@ namespace DataBase.Repositroy
     public class DepartmentRepository : IDepartmentRepository
     {
         private readonly BoardContext _boardContext;
+
         public DepartmentRepository(BoardContext boardContext)
         {
             _boardContext = boardContext;
         }
+
         public async Task<bool> CreateDepartament(Department department)
         {
             try
@@ -32,6 +34,7 @@ namespace DataBase.Repositroy
                 return false;
             }
         }
+
         public async Task<bool> EditDepartament(Department department)
         {
             try
@@ -46,6 +49,7 @@ namespace DataBase.Repositroy
                 return false;
             }
         }
+
         public async Task<bool> DeleteDepartament(int id)
         {
             try
@@ -60,6 +64,7 @@ namespace DataBase.Repositroy
                 return false;
             }
         }
+
         public IEnumerable<Department> GetDepartments()
         {
             var c = _boardContext.Departaments.Include(t => t.Users).ToList();

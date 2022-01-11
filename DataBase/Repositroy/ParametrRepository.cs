@@ -11,11 +11,14 @@ namespace DataBase.Repositroy
 {
     public class ParametrRepository : IParametrRepository
     {
+
         private readonly BoardContext _boardContext;
+
         public ParametrRepository(BoardContext boardContext)
         {
             _boardContext = boardContext;
         }
+
         public async Task<bool> Create(Parameter parametr)
         {
             try

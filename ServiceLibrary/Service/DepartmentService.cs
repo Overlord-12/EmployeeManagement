@@ -11,11 +11,14 @@ namespace ServiceLibrary.Service
 {
     public class DepartmentService : IDepartmentService
     {
+
         private readonly IDepartmentRepository _departamentRepository;
+
         public DepartmentService(IDepartmentRepository departamentRepository)
         {
             _departamentRepository = departamentRepository;
         }
+
         public Task<bool> CreateDepartament(Department department)
         {
             return _departamentRepository.CreateDepartament(department);

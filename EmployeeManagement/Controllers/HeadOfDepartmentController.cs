@@ -33,6 +33,7 @@ namespace EmployeeManagement.Controllers
             _evaluationService = evaluationService;
             _userService = userService;
         }
+
         [HttpGet]
         [Authorize(Roles = "headOfDepartament")]
         public IActionResult Index()
@@ -44,6 +45,7 @@ namespace EmployeeManagement.Controllers
         {
             return View(_evaluationService.GetEvaluationFromUser(id));
         }
+
         [HttpGet]
         [Authorize(Roles = "headOfDepartament")]
         public IActionResult Details(int id)
@@ -51,6 +53,7 @@ namespace EmployeeManagement.Controllers
             var c = _userService.GetSubordinateUsers(id);
             return View(_userService.GetSubordinateUsers(id));
         }
+
         [Authorize(Roles = "headOfDepartament")]
         [HttpGet]
         public IActionResult Evaluation(int id)
@@ -64,6 +67,7 @@ namespace EmployeeManagement.Controllers
             };
             return View(eval);
         }
+
         [Authorize(Roles = "headOfDepartament")]
         [HttpPost]
         public async Task<IActionResult> Evaluation(EvaluationViewModel evaluationViewModel)
@@ -76,6 +80,7 @@ namespace EmployeeManagement.Controllers
         {
             return View(_evaluationService.GetEvaluationFromUser(id));
         }
+
         [Authorize(Roles = "headOfDepartament")]
         [HttpPost]
         public IActionResult ExportToExcel(SelectionViewModel selectionViewModel)
@@ -84,6 +89,7 @@ namespace EmployeeManagement.Controllers
             var content = _selectionService.ExportSelection(_mapper.Map<Selection>(selectionViewModel));
             return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", name);
         }
+
         [Authorize(Roles = "headOfDepartament")]
         [HttpPost]
         public async Task<IActionResult> Import(IFormFile file)
@@ -95,6 +101,7 @@ namespace EmployeeManagement.Controllers
             ViewBag.Selection = _selectionService.GetSelectionsFromDepartment((int)departmentId);
             return View("Selection", selectionViewModel);
         }
+
         [Authorize(Roles = "headOfDepartament")]
         [HttpGet]
         public IActionResult Selection(IEnumerable<User> evaluations)
@@ -105,6 +112,7 @@ namespace EmployeeManagement.Controllers
             selectionViewModel.Users = evaluations;
             return View(selectionViewModel);
         }
+
         [Authorize(Roles = "headOfDepartament")]
         [HttpPost]
         public IActionResult Selection(SelectionViewModel selectionViewModel)
