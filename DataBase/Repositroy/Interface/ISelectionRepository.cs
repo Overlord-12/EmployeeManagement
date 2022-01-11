@@ -9,8 +9,8 @@ namespace DataBase.Repositroy.Interface
 {
    public interface ISelectionRepository
     {
-        public IEnumerable<Selection> Selections();
-        public Task CreateSelection(Selection selection);
+        public IEnumerable<Selection> GetSelections();
+        public Task CreateSelection(Selection selection, int[] param);
         public IEnumerable<Selection> GetSelectionsFromDepartment(int id);
         public IEnumerable<User> GetUsers(int id);
 

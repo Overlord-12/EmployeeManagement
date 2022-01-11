@@ -12,10 +12,12 @@ namespace ServiceLibrary.Service
     public class EvaluationService : IEvaluationService
     {
         private readonly IEvaluationRepository _evaluationRepository; 
+
         public EvaluationService(IEvaluationRepository evaluationRepository)
         {
             _evaluationRepository = evaluationRepository;
         }
+
         public Task CreateEvaluation(Evaluation evaluation)
         {
            return _evaluationRepository.CreateEvaluation(evaluation);

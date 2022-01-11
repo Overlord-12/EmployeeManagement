@@ -29,6 +29,7 @@ namespace EmployeeManagement.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(UserViewModel model)

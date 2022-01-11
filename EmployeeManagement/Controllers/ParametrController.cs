@@ -16,18 +16,21 @@ namespace EmployeeManagement.Controllers
         private readonly IParametrService _parametrService;
         private readonly IDepartmentService _departmentService;
         private readonly IMapper _mapper;
+
         public ParametrController(IParametrService parametrService, IDepartmentService departmentService, IMapper mapper)
         {
             _departmentService = departmentService;
             _mapper = mapper;
             _parametrService = parametrService;
         }
+
         [Authorize(Roles ="admin")]
         [HttpGet]
         public IActionResult Index()
         {
             return View(_parametrService.GetParameters());
         }
+
         [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult Delete(int id)
@@ -35,6 +38,7 @@ namespace EmployeeManagement.Controllers
             _parametrService.Delete(id);
             return RedirectToAction("Index","Parametr");
         }
+
         [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult Create()
@@ -43,6 +47,7 @@ namespace EmployeeManagement.Controllers
             parametrViewModel.Departments = _departmentService.GetDepartments();
             return View(parametrViewModel);
         }
+
         [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult Create(ParametrViewModel parametrViewModel)

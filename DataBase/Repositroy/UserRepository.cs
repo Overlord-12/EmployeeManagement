@@ -12,10 +12,12 @@ namespace EmployeeManagement.Models.Repositroy
     public class UserRepository : IUserRepository
     {
         private readonly BoardContext _boardContext;
+
         public UserRepository(BoardContext boardContext)
         {
             _boardContext = boardContext;
         }
+
         public async Task<bool> CreateUser(User user)
         {
             try
@@ -31,6 +33,7 @@ namespace EmployeeManagement.Models.Repositroy
                 return false;
             }
         }
+
         public async Task<bool> DeleteUser(int id)
         {
             try
@@ -45,6 +48,7 @@ namespace EmployeeManagement.Models.Repositroy
                 return false;
             }
         }
+
         public async Task<bool> EditUser(User user)
         {
             try
@@ -61,11 +65,13 @@ namespace EmployeeManagement.Models.Repositroy
                 return false;
             }
         }
+
         public IQueryable<User> GetUsers()
         {
             return _boardContext.Users.Include(t => t.Role).Include(t => t.Status).Include(t => t.Department).
                 Include(t=>t.EvaluationUsers).Include(t=>t.EvaluationAssessors);
         }
+
         public User Login(User model)
         {
             try

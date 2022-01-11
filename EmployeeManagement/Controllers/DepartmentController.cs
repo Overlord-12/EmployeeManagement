@@ -24,6 +24,7 @@ namespace EmployeeManagement.Controllers
             _mapper = mapper;
             _userService = userService;
         }
+
         [HttpGet]
         [Authorize(Roles = "admin")]
         public IActionResult Index()
@@ -31,6 +32,7 @@ namespace EmployeeManagement.Controllers
             var departments = _departmentService.GetDepartments().ToList();
             return View(departments);
         }
+
         [HttpGet]
         [Authorize(Roles = "admin")]
         public IActionResult CreateDepartment()
@@ -39,6 +41,7 @@ namespace EmployeeManagement.Controllers
             departmentViewModel.Users = _userService.GetFreeHeadofDepartament();
             return View(departmentViewModel);
         }
+
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> CreateDepartment(DepartmentViewModel departamentViewModel)
@@ -47,6 +50,7 @@ namespace EmployeeManagement.Controllers
             await _departmentService.CreateDepartament(department);
             return RedirectToAction("Index", "Department");
         }
+
         [HttpGet]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int id)
@@ -54,6 +58,7 @@ namespace EmployeeManagement.Controllers
             await _departmentService.DeleteDepartament(id);
             return RedirectToAction("Index", "Department");
         }
+
         [HttpGet]
         [Authorize(Roles = "admin")]
         public  IActionResult Edit(int id)
@@ -62,14 +67,16 @@ namespace EmployeeManagement.Controllers
             departament.Users = _userService.GetFreeHeadofDepartament();
             return View(departament);
         }
+
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(DepartmentViewModel departmentViewModel)
         {
-            var department = _mapper.Map<Department>(departmentViewModel);
+             var department = _mapper.Map<Department>(departmentViewModel);
             await _departmentService.EditDepartament(department);
             return RedirectToAction("Index", "Department");
         }
+
        [AcceptVerbs("Get","Post")]
        public IActionResult CheckName(string DepartmentName)
         {

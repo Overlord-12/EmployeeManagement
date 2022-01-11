@@ -12,10 +12,12 @@ namespace ServiceLibrary.Service
     public class StatusesService : IStatusesService
     {
         private readonly IStatusesRepository _statusesRepository;
+
         public StatusesService(IStatusesRepository statusesRepository)
         {
             _statusesRepository = statusesRepository;
         }
+
         public IEnumerable<Status> GetStatuses()
         {
             return _statusesRepository.GetStatuses().ToList();

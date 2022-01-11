@@ -13,8 +13,11 @@ namespace EmployeeManagement.Models.Service
 
     public class UserService : IUserService
     {
+
         private readonly IUserRepository _userRepository;
         private readonly IDepartmentService _departmentService;
+
+
         public UserService(IUserRepository userRepository, IDepartmentService departmentService)
         {
             _departmentService = departmentService;
@@ -51,6 +54,7 @@ namespace EmployeeManagement.Models.Service
         {
             return _userRepository.GetUsers();
         }
+
         public IEnumerable<User> GetFreeHeadofDepartament()
         {
             List<User> users = new List<User>();
@@ -70,10 +74,12 @@ namespace EmployeeManagement.Models.Service
             var us = _userRepository.GetUsers().Where(t => t.SupervisorId == id).ToList();
             return _userRepository.GetUsers().Where(t => t.SupervisorId == id).ToList();
         }
+
         public IEnumerable<User> GetSubordinateUsers(int id)
         {
             return _userRepository.GetUsers().Where(t => t.SupervisorId == id).ToList();
         }
+
         public int GetById(string login)
         {
             return _userRepository.GetUsers().FirstOrDefault(t=>t.Login == login).Id;

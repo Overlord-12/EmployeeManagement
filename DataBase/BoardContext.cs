@@ -12,10 +12,14 @@ namespace DataBase
         public virtual DbSet<Parameter> Parametrs { get; set; }
         public virtual DbSet<Evaluation> Evaluations { get; set; }
         public virtual DbSet<Department> Departaments { get; set; }
+
+
         public BoardContext(DbContextOptions<BoardContext> options)
          : base(options)
         {
         }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS");

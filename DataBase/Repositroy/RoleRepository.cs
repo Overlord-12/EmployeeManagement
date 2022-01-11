@@ -11,10 +11,12 @@ namespace DataBase.Repositroy
     public class RoleRepository : IRoleRepository
     {
         private readonly BoardContext _boardContext;
+
         public RoleRepository(BoardContext boardContext)
         {
             _boardContext = boardContext;
         }
+
         public IEnumerable<Role> GetRoles()
         {
             return _boardContext.Roles.ToList();
